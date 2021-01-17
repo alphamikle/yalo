@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:locale/lib.dart';
+import 'package:yalo_assets/lib.dart';
+import 'package:yalo_locale/lib.dart';
 
-void main() => runApp(MyApp());
+void main() {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
   @override
@@ -60,6 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
             _buildText('Namespaced title: ${_loc.namespacedZone.title}'),
             _buildText('Checkout from one namespace: ${_loc.namespacedZone.checkout.title}'),
             _buildText('Checkout from other namespace: ${_loc.cart.checkout.title}'),
+            _buildText('Assets example: ${Assets.ruStatic}'),
           ],
         ),
       ),

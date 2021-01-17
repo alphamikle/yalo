@@ -1,17 +1,16 @@
 import 'dart:io';
 
 import 'package:path/path.dart' as path;
-import 'package:yalo/src/locale_generator.dart';
-import 'package:yalo/src/templates/locale_pubspec_template.dart';
+import 'package:yalo/src/assets_generator.dart';
+import 'package:yalo/src/templates/assets_pubspec_template.dart';
 
-class LocaleSaver {
+class AssetsSaver {
   String packageName;
   String dartSdk;
-  String intlVersion;
   String packagePath;
-  LocaleGenerator generator;
+  AssetsGenerator generator;
 
-  void save(LocaleGenerator generator) {
+  void save(AssetsGenerator generator) {
     this.generator = generator;
     initPackageSettings();
     final Directory dir = Directory(packagePath);
@@ -23,18 +22,17 @@ class LocaleSaver {
     if (!libDir.existsSync()) {
       libDir.createSync(recursive: true);
     }
-    final File localeFile = File(path.join(libPath, 'locale.dart'));
+    final File localeFile = File(path.join(libPath, 'assets.dart'));
     localeFile.writeAsStringSync(generator.template);
     final File libFile = File(path.join(libPath, 'lib.dart'));
     libFile.writeAsStringSync(generator.libExporter);
     final File pubspecFile = File(path.join(packagePath, 'pubspec.yaml'));
-    pubspecFile.writeAsStringSync(localePubspecTemplate(packageName, dartSdk, intlVersion));
+    pubspecFile.writeAsStringSync(assetsPubspecTemplate(packageName, dartSdk));
   }
 
   void initPackageSettings() {
-    packageName = 'yalo_locale';
+    packageName = 'yalo_assets';
     dartSdk = generator.scanner.dartSdk ?? '>=2.7.0';
-    intlVersion = generator.scanner.intlVersion ?? '0.16.1';
     packagePath = path.join(generator.path, '.$packageName');
   }
 }

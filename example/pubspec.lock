@@ -156,13 +156,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "0.6.2"
-  locale:
-    dependency: "direct main"
-    description:
-      path: ".locale"
-      relative: true
-    source: path
-    version: "1.0.0"
   matcher:
     dependency: transitive
     description:
@@ -294,6 +287,20 @@ packages:
       relative: true
     source: path
     version: "0.0.1"
+  yalo_assets:
+    dependency: "direct main"
+    description:
+      path: ".yalo_assets"
+      relative: true
+    source: path
+    version: "1.0.0"
+  yalo_locale:
+    dependency: "direct main"
+    description:
+      path: ".yalo_locale"
+      relative: true
+    source: path
+    version: "1.0.0"
   yaml:
     dependency: transitive
     description:

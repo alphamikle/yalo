@@ -22,7 +22,7 @@ class LocaleGenerator with DirectoryReader {
 
   String get template => _intlTemplate.template;
 
-  String get libExporter => '''library locale;
+  String get libExporter => '''library yalo_locale;
 export 'locale.dart';
   ''';
 

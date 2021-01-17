@@ -14,8 +14,10 @@ dependencies:
   pedantic: ^1.9.0
   yalo:
     path: ../
-  locale:
-    path: ./.locale
+  yalo_locale:
+    path: ./.yalo_locale
+  yalo_assets:
+    path: ./.yalo_assets
 
 dev_dependencies:
   flutter_test:

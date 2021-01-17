@@ -1,0 +1,36 @@
+ok: OK
+
+save:
+  value: Сохранить
+  desc: Сохранение чего-либо где-либо
+
+book:
+  zero: книг
+  one: книга
+  two: книги
+  other: книг
+  desc: Используется для описания количества книг
+
+namespacedZone:
+  title: Заголовок
+  description: Описание
+  checkout:
+    title: Оформление заказа для доп. страницы
+  innerNamespacedZone:
+    title: Более глубокий заголовок
+    description: Более глубокое описание
+    book:
+      zero: книг
+      one: книга
+      two: книги
+      few: книг
+      many: книг
+      other: книг
+      desc: Используется для описания количества книг в Inner namespace
+
+cart:
+  title: Корзина
+  description: Наполните корзину для оформления заказа
+  checkout:
+    title: Оформление заказа
+    description: Вам необходимо оформить заказ

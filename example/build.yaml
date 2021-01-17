@@ -1,0 +1,7 @@
+targets:
+  $default:
+    builders:
+      assets_codegen:
+        options:
+          preload:
+            - arb

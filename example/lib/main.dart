@@ -10,11 +10,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      localizationsDelegates: localeDelegates,
-      supportedLocales: [
-        const Locale('en'),
-        const Locale('ru'),
-      ],
+      localizationsDelegates: localizationsDelegates,
+      supportedLocales: supportedLocales,
       title: 'Assets demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -63,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
             _buildText('Namespaced title: ${_loc.namespacedZone.title}'),
             _buildText('Checkout from one namespace: ${_loc.namespacedZone.checkout.title}'),
             _buildText('Checkout from other namespace: ${_loc.cart.checkout.title}'),
-            _buildText('Assets example: ${Assets.ruStatic}'),
+            _buildText('Assets example: ${Assets.rigDemoS}'),
           ],
         ),
       ),

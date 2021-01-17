@@ -1,6 +1,6 @@
 name: yalo
 description: Yalo (Yaml localizations) - is a package, which give you a simplest way to get localizations from yaml files
-version: 0.0.1
+version: 1.0.0
 homepage: https://github.com/alphamikle/yalo
 
 environment:

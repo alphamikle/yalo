@@ -51,13 +51,17 @@ import 'package:intl/intl.dart';
     $_staticMethods
   }
   
-  final localeDelegates = [$_title(), ...GlobalMaterialLocalizations.delegates];
+  final localizationsDelegates = [$_title(), ...GlobalMaterialLocalizations.delegates];\n
   ''';
 
   String _staticMethods = '';
 
+  String _supportedLocales = 'const supportedLocales = [\n';
+
+  String _supportedLocalesEnd = '];';
+
   String get template {
-    return _dependencies + _languageClasses + _start + _templatesMapStart + _templateMapBody + _templatesMapEnd + _end + _messagesUtil;
+    return _dependencies + _languageClasses + _start + _templatesMapStart + _templateMapBody + _templatesMapEnd + _end + _messagesUtil + _supportedLocales + _supportedLocalesEnd;
   }
 
   void addLanguage(String code, LanguageTemplate languageTemplate) {
@@ -67,6 +71,9 @@ import 'package:intl/intl.dart';
     ''';
     _staticMethods += '''
 static $ABSTRACT_CLASS_NAME get $code => $_title()._languageMap['$code'];
+    ''';
+    _supportedLocales += '''
+const Locale('$code'),
     ''';
   }
 }

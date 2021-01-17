@@ -9,7 +9,13 @@ class AssetsGenerator with DirectoryReader {
   final Set<String> _assetsFiles = {};
   final Set<String> _assetsFields = {};
   AssetsScanner scanner;
-  Set<String> _preloadMimes = {};
+  Set<String> _preloadMimes = {
+    'txt',
+    'json',
+    'yaml',
+    'yml',
+    // add more
+  };
 
   String template = '';
 
@@ -43,6 +49,11 @@ export 'assets.dart';
     return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1).toLowerCase());
   }
 
+  String _replaceDot(String assetField) {
+    assetField = assetField.replaceAllMapped(RegExp(r'\.([a-zA-Z0-9])'), (Match match) => match.group(1).toUpperCase()).replaceAll('.', '');
+    return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1).toLowerCase());
+  }
+
   /// Replace invalid dart variable names for correct with prefix asset...
   String _checkForInvalidFieldName(String assetField) {
     if (!assetField.contains(RegExp(r'^[a-z_$]'))) {
@@ -61,8 +72,8 @@ export 'assets.dart';
   }
 
   /// Add an asset mixin field with an asset full path and short name
-  String _getClassField(String assetFileName, String preparedField) {
-    return 'final String $preparedField = \'$assetFileName\';\n';
+  String _getClassField(String preparedField) {
+    return 'String get $preparedField => ${preparedField}S;\n';
   }
 
   String _prepareClassField(String assetFileName) {
@@ -71,6 +82,7 @@ export 'assets.dart';
     assetField = _replaceDash(assetField);
     assetField = _replaceExtension(assetField);
     assetField = _replaceUnderscore(assetField);
+    assetField = _replaceDot(assetField);
     assetField = _checkForInvalidFieldName(assetField);
     assetField = _checkForCopy(assetField, assetFileName);
     _assetsFields.add(assetField);
@@ -79,18 +91,13 @@ export 'assets.dart';
   }
 
   String _getAssetStaticField(String assetFileName, String preparedField) {
-    return 'static const String ${preparedField}Static = \'$assetFileName\';\n';
+    return 'static const String ${preparedField}S = \'$assetFileName\';\n';
   }
 
   String _startEnum() {
     return '''enum $ASSET_ENUM {
       _stub,
     ''';
-  }
-
-  String _addToEnum(String assetField) {
-    final String fieldName = RegExp(r'^final ([a-zA-Z0-9]+) =').firstMatch(assetField).group(1);
-    return '$fieldName,\n';
   }
 
   String _closeEnum(String assetEnum) {
@@ -149,12 +156,11 @@ export 'assets.dart';
     String enumMap = _startEnumMap();
     for (String assetFile in tempAssetsFiles) {
       final String preparedField = _prepareClassField(assetFile);
-      final String fieldName = _getClassField(assetFile, preparedField);
+      final String fieldName = _getClassField(preparedField);
       final String staticFieldName = _getAssetStaticField(assetFile, preparedField);
       if (_preloadMimes.any((String mime) => assetFile.contains(RegExp('\.$mime\$')))) {
-        final String enumField = _addToEnum(fieldName);
-        assetEnum += enumField;
-        enumMap += _addToEnumMap(enumField, assetFile);
+        assetEnum += '$preparedField,\n';
+        enumMap += _addToEnumMap(preparedField, assetFile);
       }
       template += fieldName;
       template += staticFieldName;

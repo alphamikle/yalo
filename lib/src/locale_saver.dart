@@ -23,7 +23,12 @@ class LocaleSaver {
     if (!libDir.existsSync()) {
       libDir.createSync(recursive: true);
     }
-    final File localeFile = File(path.join(libPath, 'locale.dart'));
+    final String srcPath = path.join(libPath, 'src');
+    final Directory srcDir = Directory(srcPath);
+    if (!srcDir.existsSync()) {
+      srcDir.createSync(recursive: true);
+    }
+    final File localeFile = File(path.join(srcPath, 'locale.dart'));
     localeFile.writeAsStringSync(generator.template);
     final File libFile = File(path.join(libPath, 'lib.dart'));
     libFile.writeAsStringSync(generator.libExporter);

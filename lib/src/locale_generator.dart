@@ -22,8 +22,9 @@ class LocaleGenerator with DirectoryReader {
 
   String get template => _intlTemplate.template;
 
-  String get libExporter => '''library yalo_locale;
-export 'locale.dart';
+  String get libExporter => '''
+library yalo_locale;
+export 'src/locale.dart';
   ''';
 
   bool isIntlFile(String fileName) => fileName.contains(RegExp('$_intlFilesPrefix\.ya?ml\$'));

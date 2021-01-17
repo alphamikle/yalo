@@ -23,8 +23,10 @@ class AssetsGenerator with DirectoryReader {
   import 'package:flutter/services.dart';
   ''';
 
-  String get libExporter => '''library yalo_assets;
-export 'assets.dart';
+  String get libExporter => '''
+library yalo_assets;
+
+export 'src/assets.dart';
   ''';
 
   /// Returns assets mixin start

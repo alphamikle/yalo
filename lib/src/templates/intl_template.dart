@@ -10,7 +10,8 @@ class IntlTemplate {
 
   String _languageClasses = '';
 
-  String _dependencies = '''import 'package:flutter_localizations/flutter_localizations.dart';
+  String _dependencies = '''
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/src/widgets/localizations.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
@@ -51,12 +52,12 @@ import 'package:intl/intl.dart';
     $_staticMethods
   }
   
-  final localizationsDelegates = [$_title(), ...GlobalMaterialLocalizations.delegates];\n
+  final List<LocalizationsDelegate> localizationsDelegates = [$_title(), ...GlobalMaterialLocalizations.delegates];\n
   ''';
 
   String _staticMethods = '';
 
-  String _supportedLocales = 'const supportedLocales = [\n';
+  String _supportedLocales = 'const List<Locale> supportedLocales = [\n';
 
   String _supportedLocalesEnd = '];';
 

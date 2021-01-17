@@ -1,8 +1,6 @@
-name: assets_example
-description: Example app of assets plugin
-version: 1.1.1
-author: Mikhail Alpha <alphamikle@gmail.com>
-homepage: https://github.com/alphamikle/assets_plugin/tree/master/assets_example
+name: example
+description: Example app of yalo package
+version: 1.0.0
 
 environment:
   sdk: ">=2.5.0"
@@ -13,16 +11,15 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   intl: ^0.16.1
-  cupertino_icons: ^0.1.3
   pedantic: ^1.9.0
-  assets_annotations: ^1.1.1
+  yalo:
+    path: ../
+  locale:
+    path: ./.locale
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  build_runner: ^1.10.0
-  assets_codegen:
-    path: ../assets_codegen
 
 flutter:
   uses-material-design: true

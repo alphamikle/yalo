@@ -1,4 +1,4 @@
-package assetspluginexample.alphaikle.com.assets_example
+package assetspluginexample.alphaikle.com.example
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

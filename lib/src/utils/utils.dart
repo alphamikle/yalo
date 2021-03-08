@@ -1,4 +1,4 @@
-String capitalize(String string) {
+String capitalize(String? string) {
   if (string == null || string.isEmpty) {
     return '';
   }

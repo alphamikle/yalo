@@ -8,7 +8,7 @@ const ASSET_ENUM_MAP = '_assetEnumMap';
 class AssetsGenerator with DirectoryReader {
   final Set<String> _assetsFiles = {};
   final Set<String> _assetsFields = {};
-  AssetsScanner scanner;
+  late AssetsScanner scanner;
   Set<String> _preloadMimes = {
     'txt',
     'json',
@@ -47,13 +47,13 @@ export 'src/assets.dart';
   }
 
   String _replaceUnderscore(String assetField) {
-    assetField = assetField.replaceAllMapped(RegExp(r'_([a-zA-Z0-9])'), (Match match) => match.group(1).toUpperCase()).replaceAll('_', '');
-    return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1).toLowerCase());
+    assetField = assetField.replaceAllMapped(RegExp(r'_([a-zA-Z0-9])'), (Match match) => match.group(1)!.toUpperCase()).replaceAll('_', '');
+    return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1)!.toLowerCase());
   }
 
   String _replaceDot(String assetField) {
-    assetField = assetField.replaceAllMapped(RegExp(r'\.([a-zA-Z0-9])'), (Match match) => match.group(1).toUpperCase()).replaceAll('.', '');
-    return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1).toLowerCase());
+    assetField = assetField.replaceAllMapped(RegExp(r'\.([a-zA-Z0-9])'), (Match match) => match.group(1)!.toUpperCase()).replaceAll('.', '');
+    return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1)!.toLowerCase());
   }
 
   /// Replace invalid dart variable names for correct with prefix asset...
@@ -111,7 +111,7 @@ export 'src/assets.dart';
   }
 
   String _addToEnumMap(String enumField, String assetFileName) {
-    final String fieldName = RegExp(r'^([a-zA-Z0-9]+)').firstMatch(enumField).group(1);
+    final String fieldName = RegExp(r'^([a-zA-Z0-9]+)').firstMatch(enumField)!.group(1)!;
     return '$ASSET_ENUM.$fieldName: \'$assetFileName\',\n';
   }
 
@@ -127,7 +127,7 @@ export 'src/assets.dart';
     Future<bool> preloadAssets() async {
       final List<Future> loaders = [];
       loadAsset($ASSET_ENUM asset) async {        
-        final String assetContent = await rootBundle.loadString($ASSET_ENUM_MAP[asset], cache: false);
+        final String assetContent = await rootBundle.loadString($ASSET_ENUM_MAP[asset]!, cache: false);
         _preloadedAssets[asset] = assetContent;
       }
       for ($ASSET_ENUM assetEnumField in $ASSET_ENUM.values) {
@@ -141,7 +141,7 @@ export 'src/assets.dart';
       if (!isPreloaded) {
         throw Exception('You should run method "preloadAssets" before accessing data with "getAssetData" method');
       }
-      return _preloadedAssets[assetEnum];
+      return _preloadedAssets[assetEnum]!;
     }''';
   }
 

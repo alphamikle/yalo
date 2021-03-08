@@ -31,7 +31,7 @@ abstract class LocalizationContentTemplate {
     interface += getValueInterface(code);
   }
 
-  void _addPluralMessage(String code, {String zero, String one, String two, String few, String many, String other, String desc}) {
+  void _addPluralMessage(String code, {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
     messages += getPluralValue(code, zero: zero, one: one, two: two, few: few, many: many, other: other, desc: desc);
     interface += getValueInterface(code, true);
   }
@@ -45,9 +45,12 @@ abstract class LocalizationContentTemplate {
       addSimpleMessage(code, value[VALUE], value[DESC] ?? '');
       return;
     } else if (value[ZERO] != null) {
-      _addPluralMessage(code, zero: value[ZERO], one: value[ONE], two: value[TWO], few: value[FEW], many: value[MANY], other: value[OTHER], desc: value[DESC]);
+      _addPluralMessage(code,
+          zero: value[ZERO], one: value[ONE], two: value[TWO], few: value[FEW], many: value[MANY], other: value[OTHER], desc: value[DESC]);
     } else {
-      namespaces += NamespaceTemplate(title: code, contents: value, lang: lang, isFirst: isFirst, parent: title.toLowerCase() == lang.toLowerCase() ? '' : title).toString();
+      namespaces += NamespaceTemplate(
+              title: code, contents: value, lang: lang, isFirst: isFirst, parent: title.toLowerCase() == lang.toLowerCase() ? '' : title)
+          .toString();
       interface += getNamespaceInterface(code, lang, title);
       _addNamespaceMessage(code, lang);
     }

@@ -5,11 +5,11 @@ import 'package:yalo/src/locale_generator.dart';
 import 'package:yalo/src/templates/locale_pubspec_template.dart';
 
 class LocaleSaver {
-  String packageName;
-  String dartSdk;
-  String intlVersion;
-  String packagePath;
-  LocaleGenerator generator;
+  late String packageName;
+  late String dartSdk;
+  late String intlVersion;
+  late String packagePath;
+  late LocaleGenerator generator;
 
   void save(LocaleGenerator generator) {
     this.generator = generator;
@@ -38,8 +38,8 @@ class LocaleSaver {
 
   void initPackageSettings() {
     packageName = 'yalo_locale';
-    dartSdk = generator.scanner.dartSdk ?? '>=2.7.0';
-    intlVersion = generator.scanner.intlVersion ?? '0.16.1';
+    dartSdk = generator.scanner.dartSdk ?? '>=2.12.0';
+    intlVersion = generator.scanner.intlVersion ?? '0.17.0';
     packagePath = path.join(generator.path, '.$packageName');
   }
 }

@@ -5,10 +5,10 @@ import 'package:yalo/src/assets_generator.dart';
 import 'package:yalo/src/templates/assets_pubspec_template.dart';
 
 class AssetsSaver {
-  String packageName;
-  String dartSdk;
-  String packagePath;
-  AssetsGenerator generator;
+  late String packageName;
+  late String dartSdk;
+  late String packagePath;
+  late AssetsGenerator generator;
 
   void save(AssetsGenerator generator) {
     this.generator = generator;
@@ -37,7 +37,7 @@ class AssetsSaver {
 
   void initPackageSettings() {
     packageName = 'yalo_assets';
-    dartSdk = generator.scanner.dartSdk ?? '>=2.7.0';
+    dartSdk = generator.scanner.dartSdk ?? '>=2.12.0';
     packagePath = path.join(generator.path, '.$packageName');
   }
 }

@@ -2,9 +2,7 @@ import 'package:yalo/src/constants/common_constants.dart';
 import 'package:yalo/src/templates/localization_content_template.dart';
 
 class LanguageTemplate extends LocalizationContentTemplate {
-  LanguageTemplate(String title, bool isFirst)
-      : assert(title != null),
-        super(title, title, isFirst);
+  LanguageTemplate(String title, bool isFirst) : super(title, title, isFirst);
 
   @override
   String get start => '''

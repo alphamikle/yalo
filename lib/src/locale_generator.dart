@@ -12,11 +12,11 @@ import 'package:yaml/yaml.dart';
 class LocaleGenerator with DirectoryReader {
   final Set<String> _intlFiles = {};
   final Set<String> _assetsFiles = {};
-  AssetsScanner scanner;
+  late AssetsScanner scanner;
 
-  IntlTemplate _intlTemplate;
+  late IntlTemplate _intlTemplate;
   Map<String, LanguageTemplate> _languages = {};
-  String _intlFilesPrefix;
+  late String _intlFilesPrefix;
 
   List<String> get languagesCodes => _languages.keys.toList();
 
@@ -42,11 +42,11 @@ export 'src/locale.dart';
 
   String getLanguageCode(String originalFileName) {
     final RegExp regExp = RegExp('\/([a-z]+)\/?\.?($_intlFilesPrefix).ya?ml\$');
-    final RegExpMatch match = regExp.firstMatch(originalFileName);
+    final RegExpMatch? match = regExp.firstMatch(originalFileName);
     if (match == null) {
       return 'en';
     }
-    return match.group(1);
+    return match.group(1)!;
   }
 
   void readIntlFiles() {

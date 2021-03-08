@@ -34,7 +34,7 @@ import 'package:intl/intl.dart';
     @override
     Future<$ABSTRACT_CLASS_NAME> load(Locale locale) async {
       Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
-      return _languageMap[locale.languageCode];
+      return _languageMap[locale.languageCode]!;
     }
     
     @override
@@ -62,7 +62,16 @@ import 'package:intl/intl.dart';
   String _supportedLocalesEnd = '];';
 
   String get template {
-    return _dependencies + _languageClasses + _start + _templatesMapStart + _templateMapBody + _templatesMapEnd + _end + _messagesUtil + _supportedLocales + _supportedLocalesEnd;
+    return _dependencies +
+        _languageClasses +
+        _start +
+        _templatesMapStart +
+        _templateMapBody +
+        _templatesMapEnd +
+        _end +
+        _messagesUtil +
+        _supportedLocales +
+        _supportedLocalesEnd;
   }
 
   void addLanguage(String code, LanguageTemplate languageTemplate) {
@@ -71,7 +80,7 @@ import 'package:intl/intl.dart';
     '$code': _${languageTemplate.title}(),
     ''';
     _staticMethods += '''
-static $ABSTRACT_CLASS_NAME get $code => $_title()._languageMap['$code'];
+static $ABSTRACT_CLASS_NAME get $code => $_title()._languageMap['$code']!;
     ''';
     _supportedLocales += '''
 const Locale('$code'),

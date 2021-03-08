@@ -5,13 +5,12 @@ import 'package:yaml/yaml.dart';
 
 class NamespaceTemplate extends LocalizationContentTemplate {
   NamespaceTemplate({
-    String title,
-    String lang,
-    this.contents,
+    required String title,
+    required String lang,
+    required this.contents,
     this.parent = '',
     bool isFirst = false,
-  })  : assert(title != null && contents != null && lang != null),
-        super(title, lang, isFirst);
+  }) : super(title, lang, isFirst);
 
   final YamlMap contents;
 

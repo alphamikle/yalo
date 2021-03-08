@@ -3,7 +3,7 @@ import 'package:yalo/src/templates/localization_content_template.dart';
 import 'package:yalo/src/utils/utils.dart';
 import 'package:yaml/yaml.dart';
 
-void _nullException(String value, [String name = CODE]) {
+void _nullException(String? value, [String name = CODE]) {
   if (value == null) {
     throw ArgumentError.notNull(name);
   }
@@ -15,7 +15,7 @@ void _emptyException(String value, [String name = CODE]) {
   }
 }
 
-String _replaceNumericPattern(String value) {
+String? _replaceNumericPattern(String? value) {
   if (value == null) {
     return null;
   }
@@ -37,7 +37,7 @@ String getValueInterface(String code, [bool isPlural = false]) {
     ''';
   }
   return '''
-    String $code;
+    late String $code;
   ''';
 }
 
@@ -54,7 +54,7 @@ String getSimpleValue(String code, String value, [String desc = '']) {
   ''';
 }
 
-String getPluralValue(String code, {String zero, String one, String two, String few, String many, String other, String desc}) {
+String getPluralValue(String code, {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
   _nullException(code, CODE);
   _nullException(zero, ZERO);
   _nullException(one, ONE);
@@ -91,7 +91,7 @@ String getNamespaceInterface(String code, String lang, String parent) {
   final fieldName = capitalize(code);
   final clearFieldName = (parentName + fieldName).replaceFirst(lang, '');
   return '''
-    _$clearFieldName $code;
+    late _$clearFieldName $code;
   ''';
 }
 

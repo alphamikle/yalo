@@ -4,7 +4,7 @@ version: 2.0.1
 homepage: https://github.com/alphamikle/yalo
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.14.2 <3.0.0"
   flutter: ">=2.0.0"
 
 dependencies:
@@ -14,7 +14,7 @@ dependencies:
   dart_style: ^2.0.2
   yaml: ^3.1.0
   path: ^1.8.0
-  analyzer: ^2.0.0
+  analyzer: ^2.3.0
 
 dev_dependencies:
   flutter_test:

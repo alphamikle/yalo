@@ -10,16 +10,16 @@ class IntlTemplate {
 
   String _languageClasses = '';
 
-  String _dependencies = '''
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter/src/widgets/localizations.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
+  String get _dependencies => '''
+  import 'package:flutter_localizations/flutter_localizations.dart';
+  import 'package:flutter/src/widgets/localizations.dart';
+  import 'package:flutter/widgets.dart';
+  import 'package:intl/intl.dart';
 
   ''';
 
   String get _templatesMapStart => '''
-  final Map<String, $ABSTRACT_CLASS_NAME> _languageMap = {
+  final Map<String, $kInterfaceName> _languageMap = {
   ''';
 
   String get _templatesMapEnd => '''
@@ -27,18 +27,18 @@ import 'package:intl/intl.dart';
   ''';
 
   String get _start => '''
-  class $_title extends LocalizationsDelegate<$ABSTRACT_CLASS_NAME> {
+  class $_title extends LocalizationsDelegate<$kInterfaceName> {
     @override
     bool isSupported(Locale locale) => _languageMap.keys.contains(locale.languageCode);
   
     @override
-    Future<$ABSTRACT_CLASS_NAME> load(Locale locale) async {
+    Future<$kInterfaceName> load(Locale locale) async {
       Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
       return _languageMap[locale.languageCode]!;
     }
     
     @override
-    bool shouldReload(LocalizationsDelegate<$ABSTRACT_CLASS_NAME> old) => false;\n
+    bool shouldReload(LocalizationsDelegate<$kInterfaceName> old) => false;\n
   ''';
 
   String get _end => '''
@@ -47,7 +47,7 @@ import 'package:intl/intl.dart';
 
   String get _messagesUtil => '''  
   class Messages {
-    static $ABSTRACT_CLASS_NAME of(BuildContext context) => Localizations.of(context, $ABSTRACT_CLASS_NAME);
+    static $kInterfaceName of(BuildContext context) => Localizations.of(context, $kInterfaceName);
 
     $_staticMethods
   }
@@ -59,7 +59,7 @@ import 'package:intl/intl.dart';
 
   String _supportedLocales = 'const List<Locale> supportedLocales = [\n';
 
-  String _supportedLocalesEnd = '];';
+  String get _supportedLocalesEnd => '];';
 
   String get template {
     return _dependencies +
@@ -80,7 +80,7 @@ import 'package:intl/intl.dart';
     '$code': _${languageTemplate.title}(),
     ''';
     _staticMethods += '''
-static $ABSTRACT_CLASS_NAME get $code => $_title()._languageMap['$code']!;
+static $kInterfaceName get $code => $_title()._languageMap['$code']!;
     ''';
     _supportedLocales += '''
 const Locale('$code'),

@@ -1,15 +1,15 @@
 import 'package:yalo/src/directory_reader.dart';
 import 'package:yalo/src/utils/assets_scanner.dart';
 
-const ASSET_ENUM = 'Asset';
-const ASSET_ENUM_MAP = '_assetEnumMap';
+const kAssetsEnum = 'Asset';
+const kAssetsEnumMap = '_assetEnumMap';
 
 /// Generator for user classes, annotated with @AstHelp
 class AssetsGenerator with DirectoryReader {
   final Set<String> _assetsFiles = {};
   final Set<String> _assetsFields = {};
   late AssetsScanner scanner;
-  Set<String> _preloadMimes = {
+  final Set<String> _preloadMimes = {
     'txt',
     'json',
     'yaml',
@@ -43,16 +43,20 @@ export 'src/assets.dart';
   }
 
   String _replaceExtension(String assetField) {
-    return assetField.replaceAll(RegExp(r'\.[a-zA-Z0-9]+$'), '');
+    return assetField.replaceAll(RegExp(r'\.[a-zA-Z\d]+$'), '');
   }
 
   String _replaceUnderscore(String assetField) {
-    assetField = assetField.replaceAllMapped(RegExp(r'_([a-zA-Z0-9])'), (Match match) => match.group(1)!.toUpperCase()).replaceAll('_', '');
+    assetField = assetField
+        .replaceAllMapped(RegExp(r'_([a-zA-Z\d])'), (Match match) => match.group(1)!.toUpperCase())
+        .replaceAll('_', '');
     return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1)!.toLowerCase());
   }
 
   String _replaceDot(String assetField) {
-    assetField = assetField.replaceAllMapped(RegExp(r'\.([a-zA-Z0-9])'), (Match match) => match.group(1)!.toUpperCase()).replaceAll('.', '');
+    assetField = assetField
+        .replaceAllMapped(RegExp(r'\.([a-zA-Z\d])'), (Match match) => match.group(1)!.toUpperCase())
+        .replaceAll('.', '');
     return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1)!.toLowerCase());
   }
 
@@ -97,7 +101,7 @@ export 'src/assets.dart';
   }
 
   String _startEnum() {
-    return '''enum $ASSET_ENUM {
+    return '''enum $kAssetsEnum {
       _stub,
     ''';
   }
@@ -107,12 +111,12 @@ export 'src/assets.dart';
   }
 
   String _startEnumMap() {
-    return '\nfinal Map<$ASSET_ENUM, String> $ASSET_ENUM_MAP = {\n';
+    return '\nfinal Map<$kAssetsEnum, String> $kAssetsEnumMap = {\n';
   }
 
   String _addToEnumMap(String enumField, String assetFileName) {
-    final String fieldName = RegExp(r'^([a-zA-Z0-9]+)').firstMatch(enumField)!.group(1)!;
-    return '$ASSET_ENUM.$fieldName: \'$assetFileName\',\n';
+    final String fieldName = RegExp(r'^([a-zA-Z\d]+)').firstMatch(enumField)!.group(1)!;
+    return '$kAssetsEnum.$fieldName: \'$assetFileName\',\n';
   }
 
   String _closeEnumMap(String enumMap) {
@@ -122,22 +126,22 @@ export 'src/assets.dart';
   /// Generate preload assets function
   String _preloadAssets() {
     return '''
-    final Map<$ASSET_ENUM, String> _preloadedAssets = Map();
+    final Map<$kAssetsEnum, String> _preloadedAssets = Map();
     bool isPreloaded = false;
     Future<bool> preloadAssets() async {
       final List<Future> loaders = [];
-      loadAsset($ASSET_ENUM asset) async {        
-        final String assetContent = await rootBundle.loadString($ASSET_ENUM_MAP[asset]!, cache: false);
+      loadAsset($kAssetsEnum asset) async {        
+        final String assetContent = await rootBundle.loadString($kAssetsEnumMap[asset]!, cache: false);
         _preloadedAssets[asset] = assetContent;
       }
-      for ($ASSET_ENUM assetEnumField in $ASSET_ENUM.values) {
+      for ($kAssetsEnum assetEnumField in $kAssetsEnum.values) {
         loaders.add(loadAsset(assetEnumField));
       }
       await Future.wait<void>(loaders);
       isPreloaded = true;
       return isPreloaded;
     }
-    String getAssetData($ASSET_ENUM assetEnum) {
+    String getAssetData($kAssetsEnum assetEnum) {
       if (!isPreloaded) {
         throw Exception('You should run method "preloadAssets" before accessing data with "getAssetData" method');
       }

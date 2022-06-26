@@ -1,13 +1,10 @@
-const String VALUE = 'value';
-const String DESC = 'desc';
-
-const String CODE = 'code';
-
-const String HOW_MANY = 'howMany';
-
-const String ZERO = 'zero';
-const String ONE = 'one';
-const String TWO = 'two';
-const String FEW = 'few';
-const String MANY = 'many';
-const String OTHER = 'other';
+const String kValue = 'value';
+const String kDesc = 'desc';
+const String kCode = 'code';
+const String kHowMany = 'howMany';
+const String kZero = 'zero';
+const String kOne = 'one';
+const String kTwo = 'two';
+const String kFew = 'few';
+const String kMany = 'many';
+const String kOther = 'other';

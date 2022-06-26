@@ -31,7 +31,8 @@ abstract class LocalizationContentTemplate {
     interface += getValueInterface(code);
   }
 
-  void _addPluralMessage(String code, {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
+  void _addPluralMessage(String code,
+      {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
     messages += getPluralValue(code, zero: zero, one: one, two: two, few: few, many: many, other: other, desc: desc);
     interface += getValueInterface(code, true);
   }
@@ -41,15 +42,25 @@ abstract class LocalizationContentTemplate {
   }
 
   void addMapMessage(String code, YamlMap value) {
-    if (value[VALUE] != null) {
-      addSimpleMessage(code, value[VALUE], value[DESC] ?? '');
+    if (value[kValue] != null) {
+      addSimpleMessage(code, value[kValue], value[kDesc] ?? '');
       return;
-    } else if (value[ZERO] != null) {
+    } else if (value[kZero] != null) {
       _addPluralMessage(code,
-          zero: value[ZERO], one: value[ONE], two: value[TWO], few: value[FEW], many: value[MANY], other: value[OTHER], desc: value[DESC]);
+          zero: value[kZero],
+          one: value[kOne],
+          two: value[kTwo],
+          few: value[kFew],
+          many: value[kMany],
+          other: value[kOther],
+          desc: value[kDesc]);
     } else {
       namespaces += NamespaceTemplate(
-              title: code, contents: value, lang: lang, isFirst: isFirst, parent: title.toLowerCase() == lang.toLowerCase() ? '' : title)
+              title: code,
+              contents: value,
+              lang: lang,
+              isFirst: isFirst,
+              parent: title.toLowerCase() == lang.toLowerCase() ? '' : title)
           .toString();
       interface += getNamespaceInterface(code, lang, title);
       _addNamespaceMessage(code, lang);

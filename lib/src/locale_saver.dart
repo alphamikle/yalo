@@ -38,7 +38,7 @@ class LocaleSaver {
 
   void initPackageSettings() {
     packageName = 'yalo_locale';
-    dartSdk = generator.scanner.dartSdk ?? '>=2.12.0';
+    dartSdk = generator.scanner.dartSdk ?? '>=2.17.0';
     intlVersion = generator.scanner.intlVersion ?? '0.17.0';
     packagePath = path.join(generator.path, '.$packageName');
   }

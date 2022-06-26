@@ -15,7 +15,7 @@ class LocaleGenerator with DirectoryReader {
   late AssetsScanner scanner;
 
   late IntlTemplate _intlTemplate;
-  Map<String, LanguageTemplate> _languages = {};
+  final Map<String, LanguageTemplate> _languages = {};
   late String _intlFilesPrefix;
 
   List<String> get languagesCodes => _languages.keys.toList();

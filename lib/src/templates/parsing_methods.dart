@@ -3,13 +3,13 @@ import 'package:yalo/src/templates/localization_content_template.dart';
 import 'package:yalo/src/utils/utils.dart';
 import 'package:yaml/yaml.dart';
 
-void _nullException(String? value, [String name = CODE]) {
+void _nullException(String? value, [String name = kCode]) {
   if (value == null) {
     throw ArgumentError.notNull(name);
   }
 }
 
-void _emptyException(String value, [String name = CODE]) {
+void _emptyException(String value, [String name = kCode]) {
   if (value.isEmpty) {
     throw ArgumentError.value(value, name, '$name must not been empty');
   }
@@ -22,18 +22,18 @@ String? _replaceNumericPattern(String? value) {
   if (value.isEmpty) {
     return '';
   }
-  final String pattern = r'%N';
+  const String pattern = r'%N';
   if (value.contains(pattern)) {
-    final replacedValue = value.replaceAll(pattern, '\$$HOW_MANY');
-    return '$replacedValue';
+    final replacedValue = value.replaceAll(pattern, '\$$kHowMany');
+    return replacedValue;
   }
-  return '$value';
+  return value;
 }
 
 String getValueInterface(String code, [bool isPlural = false]) {
   if (isPlural) {
     return '''
-      String $code(int $HOW_MANY);
+      String $code(int $kHowMany);
     ''';
   }
   return '''
@@ -42,9 +42,9 @@ String getValueInterface(String code, [bool isPlural = false]) {
 }
 
 String getSimpleValue(String code, String value, [String desc = '']) {
-  _nullException(code, CODE);
-  _emptyException(code, CODE);
-  _nullException(value, VALUE);
+  _nullException(code, kCode);
+  _emptyException(code, kCode);
+  _nullException(value, kValue);
 
   return '''
     /// Description: "$desc"
@@ -54,12 +54,13 @@ String getSimpleValue(String code, String value, [String desc = '']) {
   ''';
 }
 
-String getPluralValue(String code, {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
-  _nullException(code, CODE);
-  _nullException(zero, ZERO);
-  _nullException(one, ONE);
-  _nullException(other, OTHER);
-  _emptyException(code, CODE);
+String getPluralValue(String code,
+    {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
+  _nullException(code, kCode);
+  _nullException(zero, kZero);
+  _nullException(one, kOne);
+  _nullException(other, kOther);
+  _emptyException(code, kCode);
 
   zero = _replaceNumericPattern(zero);
   other = _replaceNumericPattern(other);
@@ -73,7 +74,7 @@ String getPluralValue(String code, {String? zero, String? one, String? two, Stri
     /// Description: "$desc"
     /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
     @override
-    String $code(int $HOW_MANY) => Intl.plural($HOW_MANY,
+    String $code(int $kHowMany) => Intl.plural($kHowMany,
       name: '$code',
       zero: '$zero',
       one: '$one',

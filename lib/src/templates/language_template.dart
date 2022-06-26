@@ -6,12 +6,12 @@ class LanguageTemplate extends LocalizationContentTemplate {
 
   @override
   String get start => '''
-    class _$title extends $ABSTRACT_CLASS_NAME {
+    class _$title extends $kInterfaceName {
   ''';
 
   @override
   String get interfaceStart => '''
-    abstract class $ABSTRACT_CLASS_NAME {
+    abstract class $kInterfaceName {
   ''';
 
   @override

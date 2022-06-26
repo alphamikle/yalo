@@ -37,7 +37,7 @@ class AssetsSaver {
 
   void initPackageSettings() {
     packageName = 'yalo_assets';
-    dartSdk = generator.scanner.dartSdk ?? '>=2.12.0';
+    dartSdk = generator.scanner.dartSdk ?? '>=2.17.0';
     packagePath = path.join(generator.path, '.$packageName');
   }
 }

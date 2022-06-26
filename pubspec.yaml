@@ -1,11 +1,11 @@
 name: yalo
 description: Yalo (Yaml localizations) - is a package, which give you a simplest way to get localizations from yaml files
-version: 2.0.2
+version: 3.0.0
 homepage: https://github.com/alphamikle/yalo
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.0.0"
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: ">=3.0.0"
 
 dependencies:
   flutter:
@@ -14,10 +14,11 @@ dependencies:
   dart_style: ^2.0.2
   yaml: ^3.1.0
   path: ^1.8.0
-  analyzer: ^2.3.0
+  analyzer: ^4.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints: ^2.0.1
 
 flutter:

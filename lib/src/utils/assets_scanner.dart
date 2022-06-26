@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:yaml/yaml.dart';
 
-const FLUTTER = 'flutter';
-const ASSETS = 'assets';
-const DEPENDENCIES = 'dependencies';
-const INTL = 'intl';
-const ENV = 'environment';
-const SDK = 'sdk';
+const kFlutter = 'flutter';
+const kAssets = 'assets';
+const kDependencies = 'dependencies';
+const kIntl = 'intl';
+const kEnv = 'environment';
+const kSdk = 'sdk';
 
 class AssetsScanner {
   late Directory _curDir;
@@ -23,25 +23,26 @@ class AssetsScanner {
 
   YamlList get assetsFolders => _assetsFolders!;
 
-  YamlMap? get _dependencies => _pubspecContent[DEPENDENCIES];
+  YamlMap? get _dependencies => _pubspecContent[kDependencies];
 
-  String? get intlVersion => _dependencies == null ? null : _dependencies![INTL];
+  String? get intlVersion => _dependencies == null ? null : _dependencies![kIntl];
 
-  String? get dartSdk => _pubspecContent[ENV][SDK];
+  String? get dartSdk => _pubspecContent[kEnv][kSdk];
 
   AssetsScanner() {
     _curDir = Directory.current;
     _path = _curDir.path;
     _files = _curDir.listSync();
-    _pubspecEntity = _files.firstWhere((FileSystemEntity fileEntity) => fileEntity.path.contains(RegExp(r'pubspec.ya?ml$')),
+    _pubspecEntity = _files.firstWhere(
+        (FileSystemEntity fileEntity) => fileEntity.path.contains(RegExp(r'pubspec.ya?ml$')),
         orElse: () => _exception('pubspec file'));
     _pubspecFile = File(_pubspecEntity.path);
     _pubspecContent = loadYaml(_pubspecFile.readAsStringSync());
-    _flutter = _pubspecContent[FLUTTER];
+    _flutter = _pubspecContent[kFlutter];
     if (_flutter == null) {
       _exception('"flutter" section in pubspec');
     }
-    _assetsFolders = _flutter![ASSETS];
+    _assetsFolders = _flutter![kAssets];
     if (_assetsFolders == null || _assetsFolders!.isEmpty) {
       throw Exception('''
       Not found "assets" block in pubspec.yaml file or this block is empty. Please, add at least a one folder to assets block like that:

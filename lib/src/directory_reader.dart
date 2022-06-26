@@ -17,7 +17,7 @@ mixin DirectoryReader {
 
   String getOnlyAssetFileName(String assetFileNameWithPath) {
     assetFileNameWithPath = assetFileNameWithPath.replaceAll(RegExp(r'\\'), '/');
-    assetFileNameWithPath = assetFileNameWithPath.replaceAll(RegExp(r'^.*\/'), '');
+    assetFileNameWithPath = assetFileNameWithPath.replaceAll(RegExp(r'^.*/'), '');
     return assetFileNameWithPath;
   }
 
@@ -34,8 +34,10 @@ mixin DirectoryReader {
       if (!_assetsFoldersWatchers.containsKey(dirPath)) {
         _assetsFoldersWatchers[dirPath] = assetDirectory.watch(recursive: true);
       }
-      final List<FileSystemEntity> folderFiles =
-          assetDirectory.listSync(recursive: true).where((FileSystemEntity fileEntity) => FileSystemEntity.isFileSync(fileEntity.path)).toList();
+      final List<FileSystemEntity> folderFiles = assetDirectory
+          .listSync(recursive: true)
+          .where((FileSystemEntity fileEntity) => FileSystemEntity.isFileSync(fileEntity.path))
+          .toList();
       final String unixPath = path.replaceFirst(_diskWord, '').replaceAll(r'\', '/');
       tempAssetsFiles.addAll(folderFiles.map((FileSystemEntity fileEntity) {
         final String unixFilePath = fileEntity.path.replaceFirst(_diskWord, '').replaceAll(r'\', '/');

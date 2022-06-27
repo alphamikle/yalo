@@ -3,6 +3,8 @@ import 'package:yalo/src/templates/localization_content_template.dart';
 import 'package:yalo/src/utils/utils.dart';
 import 'package:yaml/yaml.dart';
 
+RegExp get _substitutionRegExp => RegExp(r'\$\{\w+\}');
+
 void _nullException(String? value, [String name = kCode]) {
   if (value == null) {
     throw ArgumentError.notNull(name);
@@ -15,6 +17,10 @@ void _emptyException(String value, [String name = kCode]) {
   }
 }
 
+bool _hasSubstitution(String value) {
+  return _substitutionRegExp.hasMatch(value);
+}
+
 String? _replaceNumericPattern(String? value) {
   if (value == null) {
     return null;
@@ -22,7 +28,7 @@ String? _replaceNumericPattern(String? value) {
   if (value.isEmpty) {
     return '';
   }
-  const String pattern = r'%N';
+  const String pattern = r'${howMany}';
   if (value.contains(pattern)) {
     final replacedValue = value.replaceAll(pattern, '\$$kHowMany');
     return replacedValue;
@@ -30,10 +36,25 @@ String? _replaceNumericPattern(String? value) {
   return value;
 }
 
-String getValueInterface(String code, [bool isPlural = false]) {
+String _generateArgumentsFromValue(String value) {
+  final Iterable<RegExpMatch> matches = _substitutionRegExp.allMatches(value);
+  String arguments = '';
+
+  for (final RegExpMatch match in matches) {
+    arguments += 'required String ${match.group(0).toString().replaceAll(RegExp(r'^\$\{|\}$'), '')}, ';
+  }
+  return '{$arguments}';
+}
+
+String getValueInterface(String code, String value, [bool isPlural = false]) {
   if (isPlural) {
     return '''
       String $code(int $kHowMany);
+    ''';
+  }
+  if (_hasSubstitution(value)) {
+    return '''
+    String $code(${_generateArgumentsFromValue(value)});
     ''';
   }
   return '''
@@ -46,6 +67,15 @@ String getSimpleValue(String code, String value, [String desc = '']) {
   _emptyException(code, kCode);
   _nullException(value, kValue);
 
+  if (_hasSubstitution(value)) {
+    return '''
+      /// Description: "$desc"
+      /// Example: "$value"
+      @override
+      String $code(${_generateArgumentsFromValue(value)}) => Intl.message('$value', name: '$code', desc: '$desc',);
+    ''';
+  }
+
   return '''
     /// Description: "$desc"
     /// Example: "$value"
@@ -54,8 +84,16 @@ String getSimpleValue(String code, String value, [String desc = '']) {
   ''';
 }
 
-String getPluralValue(String code,
-    {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
+String getPluralValue(
+  String code, {
+  String? zero,
+  String? one,
+  String? two,
+  String? few,
+  String? many,
+  String? other,
+  String? desc,
+}) {
   _nullException(code, kCode);
   _nullException(zero, kZero);
   _nullException(one, kOne);

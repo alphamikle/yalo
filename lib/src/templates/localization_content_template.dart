@@ -28,13 +28,32 @@ abstract class LocalizationContentTemplate {
 
   void addSimpleMessage(String code, String value, [String desc = '']) {
     messages += getSimpleValue(code, value, desc);
-    interface += getValueInterface(code);
+    interface += getValueInterface(code, value);
   }
 
-  void _addPluralMessage(String code,
-      {String? zero, String? one, String? two, String? few, String? many, String? other, String? desc}) {
+  void _addPluralMessage(
+    String code, {
+    String? zero,
+    String? one,
+    String? two,
+    String? few,
+    String? many,
+    String? other,
+    String? desc,
+  }) {
     messages += getPluralValue(code, zero: zero, one: one, two: two, few: few, many: many, other: other, desc: desc);
-    interface += getValueInterface(code, true);
+    interface += getValueInterface(
+      code,
+      [
+        zero ?? '',
+        one ?? '',
+        two ?? '',
+        few ?? '',
+        many ?? '',
+        other ?? '',
+      ].join(', '),
+      true,
+    );
   }
 
   void _addNamespaceMessage(String code, String lang) {
@@ -46,14 +65,16 @@ abstract class LocalizationContentTemplate {
       addSimpleMessage(code, value[kValue], value[kDesc] ?? '');
       return;
     } else if (value[kZero] != null) {
-      _addPluralMessage(code,
-          zero: value[kZero],
-          one: value[kOne],
-          two: value[kTwo],
-          few: value[kFew],
-          many: value[kMany],
-          other: value[kOther],
-          desc: value[kDesc]);
+      _addPluralMessage(
+        code,
+        zero: value[kZero],
+        one: value[kOne],
+        two: value[kTwo],
+        few: value[kFew],
+        many: value[kMany],
+        other: value[kOther],
+        desc: value[kDesc],
+      );
     } else {
       namespaces += NamespaceTemplate(
               title: code,

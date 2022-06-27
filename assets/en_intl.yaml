@@ -34,3 +34,14 @@ cart:
   checkout:
     title: Checkout
     description: You should checkout
+
+people:
+  zero: I saw no people there
+  one: I saw only one man there
+  two: I saw two people there
+  few: I saw ${howMany} people there
+  many: I saw ${howMany} or more people there
+  other: I think, I saw ${howMany} people there
+  desc: An example with numeric substitution in plural strings
+
+greetings: Hello ${userName}! We are glad to see you at our ${hotelName} hotel!

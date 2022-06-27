@@ -1,0 +1,179 @@
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
+
+abstract class NamespacedZoneCheckout {
+  String get title;
+}
+
+class EnNamespacedZoneCheckout extends NamespacedZoneCheckout {
+  /// Description: ""
+  /// Example: "Checkout for additional page"
+  @override
+  final String title = Intl.message('Checkout for additional page', name: 'title', desc: '');
+}
+
+abstract class NamespacedZoneInnerNamespacedZone {
+  String get title;
+  String get description;
+  String book(int howMany);
+}
+
+class EnNamespacedZoneInnerNamespacedZone extends NamespacedZoneInnerNamespacedZone {
+  /// Description: ""
+  /// Example: "Deeper title of Inner namespaced zone"
+  @override
+  final String title = Intl.message('Deeper title of Inner namespaced zone', name: 'title', desc: '');
+
+  /// Description: ""
+  /// Example: "Deeper description of Inner namespaced zone"
+  @override
+  final String description = Intl.message('Deeper description of Inner namespaced zone', name: 'description', desc: '');
+
+  /// Description: "Uses for description of books count"
+  /// Example: "zero: books, one: book, two: books, few: books, many: books, other: books"
+  @override
+  String book(int howMany) => Intl.plural(
+        howMany,
+        name: 'book',
+        zero: 'books',
+        one: 'book',
+        two: 'books',
+        few: 'books',
+        many: 'books',
+        other: 'books',
+        desc: 'Uses for description of books count',
+      );
+}
+
+abstract class NamespacedZone {
+  String get title;
+  String get description;
+  NamespacedZoneCheckout get checkout;
+  NamespacedZoneInnerNamespacedZone get innerNamespacedZone;
+}
+
+class EnNamespacedZone extends NamespacedZone {
+  /// Description: ""
+  /// Example: "Title of Namespaced zone"
+  @override
+  final String title = Intl.message('Title of Namespaced zone', name: 'title', desc: '');
+
+  /// Description: ""
+  /// Example: "Description of Namespaced zone"
+  @override
+  final String description = Intl.message('Description of Namespaced zone', name: 'description', desc: '');
+  @override
+  final NamespacedZoneCheckout checkout = EnNamespacedZoneCheckout();
+  @override
+  final NamespacedZoneInnerNamespacedZone innerNamespacedZone = EnNamespacedZoneInnerNamespacedZone();
+}
+
+abstract class CartCheckout {
+  String get title;
+  String get description;
+}
+
+class EnCartCheckout extends CartCheckout {
+  /// Description: ""
+  /// Example: "Checkout"
+  @override
+  final String title = Intl.message('Checkout', name: 'title', desc: '');
+
+  /// Description: ""
+  /// Example: "You should checkout"
+  @override
+  final String description = Intl.message('You should checkout', name: 'description', desc: '');
+}
+
+abstract class Cart {
+  String get title;
+  String get description;
+  CartCheckout get checkout;
+}
+
+class EnCart extends Cart {
+  /// Description: ""
+  /// Example: "Cart"
+  @override
+  final String title = Intl.message('Cart', name: 'title', desc: '');
+
+  /// Description: ""
+  /// Example: "Please, fill the cart to do checkout"
+  @override
+  final String description = Intl.message('Please, fill the cart to do checkout', name: 'description', desc: '');
+  @override
+  final CartCheckout checkout = EnCartCheckout();
+}
+
+abstract class LocalizationMessages {
+  String get ok;
+  String get save;
+  String book(int howMany);
+  NamespacedZone get namespacedZone;
+  Cart get cart;
+}
+
+class En extends LocalizationMessages {
+  /// Description: ""
+  /// Example: "OK"
+  @override
+  final String ok = Intl.message('OK', name: 'ok', desc: '');
+
+  /// Description: "Saving something"
+  /// Example: "Save"
+  @override
+  final String save = Intl.message('Save', name: 'save', desc: 'Saving something');
+
+  /// Description: "Uses for description of books count"
+  /// Example: "zero: books, one: book, two: books, few: books, many: books, other: books"
+  @override
+  String book(int howMany) => Intl.plural(
+        howMany,
+        name: 'book',
+        zero: 'books',
+        one: 'book',
+        two: 'books',
+        few: 'books',
+        many: 'books',
+        other: 'books',
+        desc: 'Uses for description of books count',
+      );
+  @override
+  final NamespacedZone namespacedZone = EnNamespacedZone();
+  @override
+  final Cart cart = EnCart();
+}
+
+class LocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {
+  @override
+  bool isSupported(Locale locale) => _languageMap.keys.contains(locale.languageCode);
+
+  @override
+  Future<LocalizationMessages> load(Locale locale) async {
+    Intl.defaultLocale = locale.countryCode == null ? locale.languageCode : locale.toString();
+    return _languageMap[locale.languageCode]!;
+  }
+
+  @override
+  bool shouldReload(LocalizationsDelegate<LocalizationMessages> old) => false;
+
+  final Map<String, LocalizationMessages> _languageMap = {
+    'en': En(),
+  };
+}
+
+class Messages {
+  static LocalizationMessages of(BuildContext context) => Localizations.of(context, LocalizationMessages);
+
+  static LocalizationMessages get en => LocalizationDelegate()._languageMap['en']!;
+}
+
+final List<LocalizationsDelegate> localizationsDelegates = [
+  LocalizationDelegate(),
+  ...GlobalMaterialLocalizations.delegates
+];
+
+const List<Locale> supportedLocales = [
+  Locale('en'),
+];

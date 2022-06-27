@@ -21,12 +21,12 @@ class NamespaceTemplate extends LocalizationContentTemplate {
 
   @override
   String get interfaceStart => '''
-    abstract class _$capitalizedFullTitle {
+    abstract class $capitalizedFullTitle {
   ''';
 
   @override
   String get start => '''
-    class _$lang$capitalizedFullTitle extends _$capitalizedFullTitle {
+    class $lang$capitalizedFullTitle extends $capitalizedFullTitle {
   ''';
 
   void _generate() {

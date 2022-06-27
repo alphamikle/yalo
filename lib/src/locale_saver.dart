@@ -1,8 +1,21 @@
 import 'dart:io';
 
+import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart' as path;
 import 'package:yalo/src/locale_generator.dart';
 import 'package:yalo/src/templates/locale_pubspec_template.dart';
+
+class LocaleOutput {
+  const LocaleOutput({
+    required this.localizationFile,
+    required this.libraryFile,
+    required this.pubspecFile,
+  });
+
+  final String localizationFile;
+  final String libraryFile;
+  final String pubspecFile;
+}
 
 class LocaleSaver {
   late String packageName;
@@ -11,7 +24,7 @@ class LocaleSaver {
   late String packagePath;
   late LocaleGenerator generator;
 
-  void save(LocaleGenerator generator) {
+  LocaleOutput save(LocaleGenerator generator) {
     this.generator = generator;
     initPackageSettings();
     final Directory dir = Directory(packagePath);
@@ -28,12 +41,18 @@ class LocaleSaver {
     if (!srcDir.existsSync()) {
       srcDir.createSync(recursive: true);
     }
-    final File localeFile = File(path.join(srcPath, 'locale.dart'));
-    localeFile.writeAsStringSync(generator.template);
-    final File libFile = File(path.join(libPath, 'lib.dart'));
-    libFile.writeAsStringSync(generator.libExporter);
+    final File localizationFile = File(path.join(srcPath, 'locale.dart'));
+    final DartFormatter formatter = DartFormatter(pageWidth: 120);
+    localizationFile.writeAsStringSync(formatter.format(generator.localizationCode));
+    final File libraryFile = File(path.join(libPath, 'lib.dart'));
+    libraryFile.writeAsStringSync(generator.libraryCode);
     final File pubspecFile = File(path.join(packagePath, 'pubspec.yaml'));
     pubspecFile.writeAsStringSync(localePubspecTemplate(packageName, dartSdk, intlVersion));
+    return LocaleOutput(
+      localizationFile: localizationFile.readAsStringSync(),
+      libraryFile: libraryFile.readAsStringSync(),
+      pubspecFile: pubspecFile.readAsStringSync(),
+    );
   }
 
   void initPackageSettings() {

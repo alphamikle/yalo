@@ -37,7 +37,7 @@ String getValueInterface(String code, [bool isPlural = false]) {
     ''';
   }
   return '''
-    late String $code;
+    String get $code;
   ''';
 }
 
@@ -92,7 +92,7 @@ String getNamespaceInterface(String code, String lang, String parent) {
   final fieldName = capitalize(code);
   final clearFieldName = (parentName + fieldName).replaceFirst(lang, '');
   return '''
-    late _$clearFieldName $code;
+    $clearFieldName get $code;
   ''';
 }
 
@@ -101,7 +101,7 @@ String getNamespaceValue(String code, String lang, String parent) {
   final fieldName = capitalize(code);
   return '''
     @override
-    final _$parentName$fieldName $code = _$lang$parentName$fieldName();
+    final $parentName$fieldName $code = $lang$parentName$fieldName();
   ''';
 }
 

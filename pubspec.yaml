@@ -22,3 +22,5 @@ dev_dependencies:
   flutter_lints: ^2.0.1
 
 flutter:
+  assets:
+    - assets/

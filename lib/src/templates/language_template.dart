@@ -6,7 +6,7 @@ class LanguageTemplate extends LocalizationContentTemplate {
 
   @override
   String get start => '''
-    class _$title extends $kInterfaceName {
+    class $title extends $kInterfaceName {
   ''';
 
   @override

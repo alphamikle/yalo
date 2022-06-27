@@ -164,7 +164,7 @@ export 'src/assets.dart';
       final String preparedField = _prepareClassField(assetFile);
       final String fieldName = _getClassField(preparedField);
       final String staticFieldName = _getAssetStaticField(assetFile, preparedField);
-      if (_preloadMimes.any((String mime) => assetFile.contains(RegExp('\.$mime\$')))) {
+      if (_preloadMimes.any((String mime) => assetFile.contains(RegExp('.$mime\$')))) {
         assetEnum += '$preparedField,\n';
         enumMap += _addToEnumMap(preparedField, assetFile);
       }

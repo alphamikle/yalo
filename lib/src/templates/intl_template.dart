@@ -12,7 +12,6 @@ class IntlTemplate {
 
   String get _dependencies => '''
   import 'package:flutter_localizations/flutter_localizations.dart';
-  import 'package:flutter/src/widgets/localizations.dart';
   import 'package:flutter/widgets.dart';
   import 'package:intl/intl.dart';
 
@@ -77,13 +76,13 @@ class IntlTemplate {
   void addLanguage(String code, LanguageTemplate languageTemplate) {
     _languageClasses += languageTemplate.toString();
     _templateMapBody += '''
-    '$code': _${languageTemplate.title}(),
+    '$code': ${languageTemplate.title}(),
     ''';
     _staticMethods += '''
-static $kInterfaceName get $code => $_title()._languageMap['$code']!;
+    static $kInterfaceName get $code => $_title()._languageMap['$code']!;
     ''';
     _supportedLocales += '''
-const Locale('$code'),
+    Locale('$code'),
     ''';
   }
 }

@@ -1,0 +1,11 @@
+app:
+  title: Yalo app
+  description: This is a yalo-package example app
+
+books:
+  zero: Hello, ${user}! You have no books.
+  one: Hello, ${user}! You have a one book.
+  two: Hello, ${user}! You have two books! Keep it up!
+  few: Hello, ${user}! You have ${howMany} book! Very impressive!
+  mane: Hello, Great ${user}! As many books as you have, no one else has!
+  other: Hello, ${user}! You have ${howMany} book! Very impressive!

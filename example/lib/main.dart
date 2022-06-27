@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       localizationsDelegates: localizationsDelegates,
       supportedLocales: supportedLocales,
-      title: 'Assets demo',
+      onGenerateTitle: (BuildContext context) => Messages.of(context).app.title,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

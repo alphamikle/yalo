@@ -39,7 +39,7 @@ abstract class LocalizationContentTemplate {
     String? few,
     String? many,
     String? other,
-    String? desc,
+    String desc = '',
   }) {
     messages += getPluralValue(code, zero: zero, one: one, two: two, few: few, many: many, other: other, desc: desc);
     interface += getValueInterface(
@@ -73,7 +73,7 @@ abstract class LocalizationContentTemplate {
         few: value[kFew],
         many: value[kMany],
         other: value[kOther],
-        desc: value[kDesc],
+        desc: value[kDesc] ?? '',
       );
     } else {
       namespaces += NamespaceTemplate(

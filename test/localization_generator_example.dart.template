@@ -10,7 +10,11 @@ class EnNamespacedZoneCheckout extends NamespacedZoneCheckout {
   /// Description: ""
   /// Example: "Checkout for additional page"
   @override
-  final String title = Intl.message('Checkout for additional page', name: 'title', desc: '');
+  final String title = Intl.message(
+    '''Checkout for additional page''',
+    name: 'title',
+    desc: '',
+  );
 }
 
 abstract class NamespacedZoneInnerNamespacedZone {
@@ -23,26 +27,34 @@ class EnNamespacedZoneInnerNamespacedZone extends NamespacedZoneInnerNamespacedZ
   /// Description: ""
   /// Example: "Deeper title of Inner namespaced zone"
   @override
-  final String title = Intl.message('Deeper title of Inner namespaced zone', name: 'title', desc: '');
+  final String title = Intl.message(
+    '''Deeper title of Inner namespaced zone''',
+    name: 'title',
+    desc: '',
+  );
 
   /// Description: ""
   /// Example: "Deeper description of Inner namespaced zone"
   @override
-  final String description = Intl.message('Deeper description of Inner namespaced zone', name: 'description', desc: '');
+  final String description = Intl.message(
+    '''Deeper description of Inner namespaced zone''',
+    name: 'description',
+    desc: '',
+  );
 
   /// Description: "Uses for description of books count"
   /// Example: "zero: books, one: book, two: books, few: books, many: books, other: books"
   @override
   String book(int howMany) => Intl.plural(
         howMany,
-        name: 'book',
-        zero: 'books',
-        one: 'book',
-        two: 'books',
-        few: 'books',
-        many: 'books',
-        other: 'books',
-        desc: 'Uses for description of books count',
+        name: '''book''',
+        zero: '''books''',
+        one: '''book''',
+        two: '''books''',
+        few: '''books''',
+        many: '''books''',
+        other: '''books''',
+        desc: '''Uses for description of books count''',
       );
 }
 
@@ -57,12 +69,20 @@ class EnNamespacedZone extends NamespacedZone {
   /// Description: ""
   /// Example: "Title of Namespaced zone"
   @override
-  final String title = Intl.message('Title of Namespaced zone', name: 'title', desc: '');
+  final String title = Intl.message(
+    '''Title of Namespaced zone''',
+    name: 'title',
+    desc: '',
+  );
 
   /// Description: ""
   /// Example: "Description of Namespaced zone"
   @override
-  final String description = Intl.message('Description of Namespaced zone', name: 'description', desc: '');
+  final String description = Intl.message(
+    '''Description of Namespaced zone''',
+    name: 'description',
+    desc: '',
+  );
   @override
   final NamespacedZoneCheckout checkout = EnNamespacedZoneCheckout();
   @override
@@ -78,12 +98,20 @@ class EnCartCheckout extends CartCheckout {
   /// Description: ""
   /// Example: "Checkout"
   @override
-  final String title = Intl.message('Checkout', name: 'title', desc: '');
+  final String title = Intl.message(
+    '''Checkout''',
+    name: 'title',
+    desc: '',
+  );
 
   /// Description: ""
   /// Example: "You should checkout"
   @override
-  final String description = Intl.message('You should checkout', name: 'description', desc: '');
+  final String description = Intl.message(
+    '''You should checkout''',
+    name: 'description',
+    desc: '',
+  );
 }
 
 abstract class Cart {
@@ -96,53 +124,158 @@ class EnCart extends Cart {
   /// Description: ""
   /// Example: "Cart"
   @override
-  final String title = Intl.message('Cart', name: 'title', desc: '');
+  final String title = Intl.message(
+    '''Cart''',
+    name: 'title',
+    desc: '',
+  );
 
   /// Description: ""
   /// Example: "Please, fill the cart to do checkout"
   @override
-  final String description = Intl.message('Please, fill the cart to do checkout', name: 'description', desc: '');
+  final String description = Intl.message(
+    '''Please, fill the cart to do checkout''',
+    name: 'description',
+    desc: '',
+  );
   @override
   final CartCheckout checkout = EnCartCheckout();
 }
 
+abstract class MainScreen {
+  String product({
+    required String brand,
+    required int howMany,
+  });
+}
+
+class EnMainScreen extends MainScreen {
+  /// Description: ""
+  /// Example: "zero: There no products., one: There is only one product left from the brand $brand., two: It is your last chance to buy product from the $brand., few: null, many: null, other: You can buy $howMany products"
+  @override
+  String product({
+    required String brand,
+    required int howMany,
+  }) =>
+      Intl.plural(
+        howMany,
+        name: '''product''',
+        zero: '''There no products.''',
+        one: '''There is only one product left from the brand $brand.''',
+        two: '''It is your last chance to buy product from the $brand.''',
+        few: '''You can buy $howMany products''',
+        many: '''You can buy $howMany products''',
+        other: '''You can buy $howMany products''',
+        desc: '''''',
+      );
+}
+
 abstract class LocalizationMessages {
-  String get ok;
+  String get cancel;
   String get save;
   String book(int howMany);
   NamespacedZone get namespacedZone;
   Cart get cart;
+  String people(int howMany);
+  String greetings({
+    required String userName,
+    required String hotelName,
+  });
+  String shop({
+    required String shopName,
+    required int howMany,
+    required String city,
+  });
+  MainScreen get mainScreen;
 }
 
 class En extends LocalizationMessages {
   /// Description: ""
-  /// Example: "OK"
+  /// Example: "Cancel"
   @override
-  final String ok = Intl.message('OK', name: 'ok', desc: '');
+  final String cancel = Intl.message(
+    '''Cancel''',
+    name: 'cancel',
+    desc: '',
+  );
 
   /// Description: "Saving something"
   /// Example: "Save"
   @override
-  final String save = Intl.message('Save', name: 'save', desc: 'Saving something');
+  final String save = Intl.message(
+    '''Save''',
+    name: 'save',
+    desc: 'Saving something',
+  );
 
   /// Description: "Uses for description of books count"
-  /// Example: "zero: books, one: book, two: books, few: books, many: books, other: books"
+  /// Example: "zero: books, one: book, two: books, few: null, many: null, other: books"
   @override
   String book(int howMany) => Intl.plural(
         howMany,
-        name: 'book',
-        zero: 'books',
-        one: 'book',
-        two: 'books',
-        few: 'books',
-        many: 'books',
-        other: 'books',
-        desc: 'Uses for description of books count',
+        name: '''book''',
+        zero: '''books''',
+        one: '''book''',
+        two: '''books''',
+        few: '''books''',
+        many: '''books''',
+        other: '''books''',
+        desc: '''Uses for description of books count''',
       );
   @override
   final NamespacedZone namespacedZone = EnNamespacedZone();
   @override
   final Cart cart = EnCart();
+
+  /// Description: "An example with numeric substitution in plural strings"
+  /// Example: "zero: I saw no people there, one: I saw only one man there, two: I saw two people there, few: I saw $howMany people there, many: I saw $howMany or more people there, other: I think, I saw $howMany people there"
+  @override
+  String people(int howMany) => Intl.plural(
+        howMany,
+        name: '''people''',
+        zero: '''I saw no people there''',
+        one: '''I saw only one man there''',
+        two: '''I saw two people there''',
+        few: '''I saw $howMany people there''',
+        many: '''I saw $howMany or more people there''',
+        other: '''I think, I saw $howMany people there''',
+        desc: '''An example with numeric substitution in plural strings''',
+      );
+
+  /// Description: ""
+  /// Example: "Hello $userName! We are glad to see you at our $hotelName hotel!"
+  @override
+  String greetings({
+    required String userName,
+    required String hotelName,
+  }) =>
+      Intl.message(
+        '''Hello $userName! We are glad to see you at our $hotelName hotel!''',
+        name: 'greetings',
+        desc: '',
+      );
+
+  /// Description: ""
+  /// Example: "zero: There are no any $shopName shops, one: There are exactly one $shopName shop, two: There are two $shopName shops, few: There are $howMany $shopName shops and we have plans to open additional at the $city!, many: There are $howMany shops. Sorry, I didn't remember that shop name., other: Well, I tired to count these shops. I can say that there are only $howMany shops!"
+  @override
+  String shop({
+    required String shopName,
+    required int howMany,
+    required String city,
+  }) =>
+      Intl.plural(
+        howMany,
+        name: '''shop''',
+        zero: '''There are no any $shopName shops''',
+        one: '''There are exactly one $shopName shop''',
+        two: '''There are two $shopName shops''',
+        few: '''There are $howMany $shopName shops and we have plans to open additional at the $city!''',
+        many: '''There are $howMany shops. Sorry, I didn't remember that shop name.''',
+        other: '''Well, I tired to count these shops. I can say that there are only $howMany shops!''',
+        desc: '''''',
+      );
+  @override
+  final MainScreen mainScreen = EnMainScreen();
 }
 
 class LocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {

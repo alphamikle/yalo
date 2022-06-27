@@ -41,7 +41,6 @@ class LocaleGenerator with DirectoryReader {
     _readIntlFiles();
   }
 
-  // TODO(alphamikle): Check is RegExp valid
   bool _isIntlFile(String fileName) => fileName.contains(RegExp('$_intlFilesPrefix.ya?ml\$'));
 
   void _searchIntlFiles() {
@@ -57,7 +56,6 @@ class LocaleGenerator with DirectoryReader {
   }
 
   String _getLanguageCode(String originalFileName) {
-    // TODO(alphamikle): Check is RegExp valid
     final RegExp regExp = RegExp('/([a-z]+)/?.?($_intlFilesPrefix).ya?ml\$');
     final RegExpMatch? match = regExp.firstMatch(originalFileName);
     if (match == null) {

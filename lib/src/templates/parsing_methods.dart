@@ -3,7 +3,7 @@ import 'package:yalo/src/templates/localization_content_template.dart';
 import 'package:yalo/src/utils/utils.dart';
 import 'package:yaml/yaml.dart';
 
-RegExp get _substitutionRegExp => RegExp(r'\$\{\w+\}');
+RegExp get _substitutionRegExp => RegExp(r'\$\{(\w+)\}');
 
 void _nullException(String? value, [String name = kCode]) {
   if (value == null) {
@@ -18,43 +18,38 @@ void _emptyException(String value, [String name = kCode]) {
 }
 
 bool _hasSubstitution(String value) {
-  return _substitutionRegExp.hasMatch(value);
-}
-
-String? _replaceNumericPattern(String? value) {
-  if (value == null) {
-    return null;
-  }
-  if (value.isEmpty) {
-    return '';
-  }
-  const String pattern = r'${howMany}';
-  if (value.contains(pattern)) {
-    final replacedValue = value.replaceAll(pattern, '\$$kHowMany');
-    return replacedValue;
-  }
-  return value;
+  final List<RegExpMatch> matches = _substitutionRegExp.allMatches(value).toList();
+  return matches.isNotEmpty && matches.any((RegExpMatch match) => match.group(1) != kHowMany);
 }
 
 String _generateArgumentsFromValue(String value) {
   final Iterable<RegExpMatch> matches = _substitutionRegExp.allMatches(value);
-  String arguments = '';
+  final Set<String> arguments = {};
 
   for (final RegExpMatch match in matches) {
-    arguments += 'required String ${match.group(0).toString().replaceAll(RegExp(r'^\$\{|\}$'), '')}, ';
+    final String argumentName = match.group(0).toString().replaceAll(RegExp(r'^\$\{|\}$'), '');
+    if (argumentName == kHowMany) {
+      arguments.add('required int $argumentName');
+    } else {
+      arguments.add('required String $argumentName');
+    }
   }
-  return '{$arguments}';
+  return '{${arguments.join(', ')},}';
+}
+
+String _removeExtraBraces(String code) {
+  return code.replaceAllMapped(RegExp(r'\${(\w+)}'), (Match match) => '\$${match.group(1) ?? ''}');
 }
 
 String getValueInterface(String code, String value, [bool isPlural = false]) {
-  if (isPlural) {
-    return '''
-      String $code(int $kHowMany);
-    ''';
-  }
   if (_hasSubstitution(value)) {
     return '''
     String $code(${_generateArgumentsFromValue(value)});
+    ''';
+  }
+  if (isPlural) {
+    return '''
+      String $code(int $kHowMany);
     ''';
   }
   return '''
@@ -68,20 +63,20 @@ String getSimpleValue(String code, String value, [String desc = '']) {
   _nullException(value, kValue);
 
   if (_hasSubstitution(value)) {
-    return '''
+    return _removeExtraBraces('''
       /// Description: "$desc"
       /// Example: "$value"
       @override
-      String $code(${_generateArgumentsFromValue(value)}) => Intl.message('$value', name: '$code', desc: '$desc',);
-    ''';
+      String $code(${_generateArgumentsFromValue(value)}) => Intl.message(\'\'\'$value\'\'\', name: '$code', desc: '$desc',);
+    ''');
   }
 
-  return '''
+  return _removeExtraBraces('''
     /// Description: "$desc"
     /// Example: "$value"
     @override
-    final String $code = Intl.message('$value', name: '$code', desc: '$desc');
-  ''';
+    final String $code = Intl.message(\'\'\'$value\'\'\', name: '$code', desc: '$desc',);
+  ''');
 }
 
 String getPluralValue(
@@ -92,7 +87,7 @@ String getPluralValue(
   String? few,
   String? many,
   String? other,
-  String? desc,
+  String desc = '',
 }) {
   _nullException(code, kCode);
   _nullException(zero, kZero);
@@ -100,29 +95,51 @@ String getPluralValue(
   _nullException(other, kOther);
   _emptyException(code, kCode);
 
-  zero = _replaceNumericPattern(zero);
-  other = _replaceNumericPattern(other);
-  one = _replaceNumericPattern(one);
+  if (_hasSubstitution(zero ?? '') ||
+      _hasSubstitution(one ?? '') ||
+      _hasSubstitution(two ?? '') ||
+      _hasSubstitution(few ?? '') ||
+      _hasSubstitution(many ?? '') ||
+      _hasSubstitution(other ?? '')) {
+    return _removeExtraBraces('''
+      /// Description: "$desc"
+      /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
+      @override
+      String $code(${_generateArgumentsFromValue([
+      zero ?? '',
+      one ?? '',
+      two ?? '',
+      few ?? '',
+      many ?? '',
+      other ?? '',
+    ].join(', '))}) => Intl.plural($kHowMany,
+        name: \'\'\'$code\'\'\',
+        zero: \'\'\'$zero\'\'\',
+        one: \'\'\'$one\'\'\',
+        two: \'\'\'${two ?? other}\'\'\',
+        few: \'\'\'${few ?? other}\'\'\',
+        many: \'\'\'${many ?? other}\'\'\',
+        other: \'\'\'$other\'\'\',
+        desc: \'\'\'$desc\'\'\',
+      );
+    ''');
+  }
 
-  two = _replaceNumericPattern(two) ?? other;
-  few = _replaceNumericPattern(two) ?? other;
-  many = _replaceNumericPattern(many) ?? other;
-
-  return '''
+  return _removeExtraBraces('''
     /// Description: "$desc"
     /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
     @override
     String $code(int $kHowMany) => Intl.plural($kHowMany,
-      name: '$code',
-      zero: '$zero',
-      one: '$one',
-      two: '$two',
-      few: '$few',
-      many: '$many',
-      other: '$other',
-      desc: '$desc',
+      name: \'\'\'$code\'\'\',
+      zero: \'\'\'$zero\'\'\',
+      one: \'\'\'$one\'\'\',
+      two: \'\'\'${two ?? other}\'\'\',
+      few: \'\'\'${few ?? other}\'\'\',
+      many: \'\'\'${many ?? other}\'\'\',
+      other: \'\'\'$other\'\'\',
+      desc: \'\'\'$desc\'\'\',
     );
-  ''';
+  ''');
 }
 
 String getNamespaceInterface(String code, String lang, String parent) {

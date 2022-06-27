@@ -5,15 +5,14 @@ import 'package:yaml/yaml.dart';
 
 class NamespaceTemplate extends LocalizationContentTemplate {
   NamespaceTemplate({
-    required String title,
-    required String lang,
+    required super.title,
+    required super.lang,
     required this.contents,
     this.parent = '',
-    bool isFirst = false,
-  }) : super(title, lang, isFirst);
+    super.isFirst = false,
+  });
 
   final YamlMap contents;
-
   final String parent;
 
   String get capitalizedTitle => capitalize(title);
@@ -22,11 +21,13 @@ class NamespaceTemplate extends LocalizationContentTemplate {
   @override
   String get interfaceStart => '''
     abstract class $capitalizedFullTitle {
+      T getContent<T>(String key);
   ''';
 
   @override
   String get start => '''
     class $lang$capitalizedFullTitle extends $capitalizedFullTitle {
+      Map<String, Object?> get _contentMap => {
   ''';
 
   void _generate() {
@@ -45,6 +46,7 @@ class NamespaceTemplate extends LocalizationContentTemplate {
     if (isFirst) {
       result += interfaceStart + interface + end;
     }
-    return result + start + messages + end;
+    interfaces.add(capitalizedFullTitle);
+    return result + start + contentMap + contentMapEnd + contentMapGetter + messages + end;
   }
 }

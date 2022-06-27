@@ -1,11 +1,69 @@
 app:
   title: Yalo app
-  description: This is a yalo-package example app
+  description: Presidents app
 
 books:
   zero: Hello, ${user}! You have no books.
   one: Hello, ${user}! You have a one book.
   two: Hello, ${user}! You have two books! Keep it up!
-  few: Hello, ${user}! You have ${howMany} book! Very impressive!
+  few: Hello, ${user}! You have ${howMany} books! Very impressive!
   mane: Hello, Great ${user}! As many books as you have, no one else has!
-  other: Hello, ${user}! You have ${howMany} book! Very impressive!
+  other: Hello, ${user}! You have ${howMany} books! Very impressive!
+
+tooltips:
+  increment: Increment
+
+presidents:
+  p1: George Washington
+  p2: John Adams
+  p3: Thomas Jefferson
+  p4: James Madison
+  p5: James Monroe
+  p6: John Quincy Adams
+  p7: Andrew Jackson
+  p8: Martin Van Buren
+  p9: William Henry Harrison
+  p10: John Tyler
+  p11: James K. Polk
+  p12: Zachary Taylor
+  p13: Millard Fillmore
+  p14: Franklin Pierce
+  p15: James Buchanan
+  p16: Abraham Lincoln
+  p17: Andrew Johnson
+  p18: Ulysses S. Grant
+  p19: Rutherford B. Hayes
+  p20: James A. Garfield
+  p21: Chester A. Arthur
+  p22: Grover Cleveland
+  p23: Benjamin Harrison
+  p24: Grover Cleveland
+  p25: William McKinley
+  p26: Theodore Roosevelt
+  p27: William H. Taft
+  p28: Woodrow Wilson
+  p29: Warren G. Harding
+  p30: Calvin Coolidge
+  p31: Herbert C. Hoover
+  p32: Franklin D. Roosevelt
+  p33: Harry S. Truman
+  p34: Dwight D. Eisenhower
+  p35: John F. Kennedy
+  p36: Lyndon B. Johnson
+  p37: Richard M. Nixon
+  p38: Gerald R. Ford
+  p39: James Earl Carter
+  p40: Ronald Reagan
+  p41: George Bush
+  p42: William J. Clinton
+  p43: George W. Bush
+  p44: Barack H. Obama
+  p45: Donald J. Trump
+  p46: Joseph R. Biden, Jr.
+
+mainView:
+  firstTab:
+    secondStory:
+      example:
+        title: This is a title
+        description: This is a description

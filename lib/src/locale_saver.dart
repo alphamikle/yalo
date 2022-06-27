@@ -45,7 +45,7 @@ class LocaleSaver {
     final DartFormatter formatter = DartFormatter(pageWidth: 120);
     localizationFile.writeAsStringSync(formatter.format(generator.localizationCode));
     final File libraryFile = File(path.join(libPath, 'lib.dart'));
-    libraryFile.writeAsStringSync(generator.libraryCode);
+    libraryFile.writeAsStringSync(formatter.format(generator.generateLibrary()));
     final File pubspecFile = File(path.join(packagePath, 'pubspec.yaml'));
     pubspecFile.writeAsStringSync(localePubspecTemplate(packageName, dartSdk, intlVersion));
     return LocaleOutput(

@@ -1,4 +1,4 @@
-import 'package:yalo/src/constants/language_template_constants.dart';
+import 'package:yalo/src/constants/constants.dart';
 import 'package:yalo/src/templates/localization_content_template.dart';
 import 'package:yalo/src/utils/utils.dart';
 import 'package:yaml/yaml.dart';
@@ -22,7 +22,7 @@ bool _hasSubstitution(String value) {
   return matches.isNotEmpty && matches.any((RegExpMatch match) => match.group(1) != kHowMany);
 }
 
-String _generateArgumentsFromValue(String value) {
+String _generateArgumentsFromValue(String value, {bool isPlural = false}) {
   final Iterable<RegExpMatch> matches = _substitutionRegExp.allMatches(value);
   final Set<String> arguments = {};
 
@@ -34,22 +34,22 @@ String _generateArgumentsFromValue(String value) {
       arguments.add('required String $argumentName');
     }
   }
-  return '{${arguments.join(', ')},}';
+  return '{${arguments.join(', ')},${isPlural ? ' int? precision,' : ''}}';
 }
 
 String _removeExtraBraces(String code) {
   return code.replaceAllMapped(RegExp(r'\${(\w+)}'), (Match match) => '\$${match.group(1) ?? ''}');
 }
 
-String getValueInterface(String code, String value, [bool isPlural = false]) {
+String getValueInterface(String code, String value, {bool isPlural = false}) {
   if (_hasSubstitution(value)) {
     return '''
-    String $code(${_generateArgumentsFromValue(value)});
+      String $code(${_generateArgumentsFromValue(value, isPlural: isPlural)});
     ''';
   }
   if (isPlural) {
     return '''
-      String $code(int $kHowMany);
+      String $code(int $kHowMany, {int? precision});
     ''';
   }
   return '''
@@ -106,13 +106,13 @@ String getPluralValue(
       /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
       @override
       String $code(${_generateArgumentsFromValue([
-      zero ?? '',
-      one ?? '',
-      two ?? '',
-      few ?? '',
-      many ?? '',
-      other ?? '',
-    ].join(', '))}) => Intl.plural($kHowMany,
+              zero ?? '',
+              one ?? '',
+              two ?? '',
+              few ?? '',
+              many ?? '',
+              other ?? '',
+            ].join(', '), isPlural: true)}) => Intl.plural($kHowMany,
         name: \'\'\'$code\'\'\',
         zero: \'\'\'$zero\'\'\',
         one: \'\'\'$one\'\'\',
@@ -121,6 +121,7 @@ String getPluralValue(
         many: \'\'\'${many ?? other}\'\'\',
         other: \'\'\'$other\'\'\',
         desc: \'\'\'$desc\'\'\',
+        precision: precision,
       );
     ''');
   }
@@ -129,7 +130,7 @@ String getPluralValue(
     /// Description: "$desc"
     /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
     @override
-    String $code(int $kHowMany) => Intl.plural($kHowMany,
+    String $code(int $kHowMany, {int? precision}) => Intl.plural($kHowMany,
       name: \'\'\'$code\'\'\',
       zero: \'\'\'$zero\'\'\',
       one: \'\'\'$one\'\'\',
@@ -138,6 +139,7 @@ String getPluralValue(
       many: \'\'\'${many ?? other}\'\'\',
       other: \'\'\'$other\'\'\',
       desc: \'\'\'$desc\'\'\',
+      precision: precision,
     );
   ''');
 }
@@ -162,9 +164,9 @@ String getNamespaceValue(String code, String lang, String parent) {
 
 void addMessageToLocalizationContentTemplate(dynamic value, String code, LocalizationContentTemplate template) {
   if (value is String || value is num) {
-    template.addSimpleMessage(code, value as String);
+    template.addSimpleMessage(code, value.toString());
   } else if (value is YamlMap) {
-    template.addMapMessage(code, value);
+    template.addComplexMessage(code, value);
   } else {
     throw Exception('Invalid format of message. Value: $value, key: $code, type: ${value.runtimeType}');
   }

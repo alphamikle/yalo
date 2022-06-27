@@ -1,0 +1,13 @@
+const String kInterfaceName = 'LocalizationMessages';
+const String kValue = 'value';
+const String kDesc = 'desc';
+const String kCode = 'code';
+const String kHowMany = 'howMany';
+const String kZero = 'zero';
+const String kOne = 'one';
+const String kTwo = 'two';
+const String kFew = 'few';
+const String kMany = 'many';
+const String kOther = 'other';
+const String kLocalizationGeneratorLogPrefix = 'LOCALIZATION GENERATOR';
+const String kAssetsGeneratorLogPrefix = 'ASSETS GENERATOR';

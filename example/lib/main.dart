@@ -1,73 +1,98 @@
+import 'package:device_preview/device_preview.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:yalo_assets/lib.dart';
 import 'package:yalo_locale/lib.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    DevicePreview(
+      enabled: kReleaseMode == false,
+      availableLocales: supportedLocales,
+      tools: const [
+        DeviceSection(
+          orientation: false,
+          frameVisibility: false,
+        ),
+        SystemSection(
+          theme: false,
+        ),
+      ],
+      builder: (BuildContext context) => const PresidentsApp(),
+    ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class PresidentsApp extends StatelessWidget {
+  const PresidentsApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       localizationsDelegates: localizationsDelegates,
       supportedLocales: supportedLocales,
+      locale: DevicePreview.locale(context),
       onGenerateTitle: (BuildContext context) => Messages.of(context).app.title,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      useInheritedMediaQuery: true,
+      builder: DevicePreview.appBuilder,
+      home: const MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  MyHomePageState createState() => MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class MyHomePageState extends State<MyHomePage> {
+  int _counter = 1;
 
   void _incrementCounter() {
     setState(() {
       _counter++;
+      if (_counter > 46) {
+        _counter = 1;
+      }
     });
-  }
-
-  Widget _buildText(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: Text(text, textAlign: TextAlign.center),
-    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final LocalizationMessages _loc = Messages.of(context);
+    final LocalizationMessages loc = Messages.of(context);
+    final String title = loc
+        .getContent<MainView>('mainView')
+        .getContent<MainViewFirstTab>('firstTab')
+        .getContent<FirstTabSecondStory>('secondStory')
+        .getContent<SecondStoryExample>('example')
+        .getContent('title');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('${Messages.of(context).book(1)} app'),
+        title: Text(loc.app.description),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            _buildText('You have $_counter ${_loc.book(_counter)}'),
-            _buildText('Namespaced title: ${_loc.namespacedZone.title}'),
-            _buildText('Checkout from one namespace: ${_loc.namespacedZone.checkout.title}'),
-            _buildText('Checkout from other namespace: ${_loc.cart.checkout.title}'),
-            _buildText('Assets example: ${Assets.rigDemoS}'),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(
+                loc.books(user: loc.presidents.getContent('p$_counter'), howMany: _counter),
+                textAlign: TextAlign.center,
+              ),
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
+        tooltip: loc.tooltips.increment,
+        child: const Icon(Icons.add),
       ),
     );
   }

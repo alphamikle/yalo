@@ -1,10 +1,14 @@
-import 'package:yalo/src/constants/language_template_constants.dart';
+import 'package:yalo/src/constants/constants.dart';
 import 'package:yalo/src/templates/namespace_template.dart';
 import 'package:yalo/src/templates/parsing_methods.dart';
 import 'package:yaml/yaml.dart';
 
 abstract class LocalizationContentTemplate {
-  LocalizationContentTemplate(this.title, this.lang, this.isFirst);
+  LocalizationContentTemplate({
+    required this.title,
+    required this.lang,
+    required this.isFirst,
+  });
 
   final String title;
 
@@ -12,9 +16,11 @@ abstract class LocalizationContentTemplate {
 
   final bool isFirst;
 
-  String get interfaceStart => throw UnimplementedError();
+  final Set<String> interfaces = {};
 
-  String get start => throw UnimplementedError();
+  String get interfaceStart;
+
+  String get start;
 
   String get end => '''
     }
@@ -26,9 +32,47 @@ abstract class LocalizationContentTemplate {
 
   String namespaces = '';
 
+  String contentMap = '';
+
+  String get contentMapEnd => '''
+    };
+
+  ''';
+
+  String get contentMapGetter => '''
+    @override
+    T getContent<T>(String key) {
+      final Object? content = _contentMap[key];
+      if (content is T) {
+        return content;
+      }
+      throw Exception('Not found correct content of type "\$T" by key "\$key"');
+    }
+  ''';
+
   void addSimpleMessage(String code, String value, [String desc = '']) {
     messages += getSimpleValue(code, value, desc);
+    contentMap += _getContentMapValue(code);
     interface += getValueInterface(code, value);
+  }
+
+  void addComplexMessage(String code, YamlMap value) {
+    if (value[kValue] != null) {
+      addSimpleMessage(code, value[kValue], value[kDesc] ?? '');
+    } else if (value[kZero] != null) {
+      _addPluralMessage(
+        code,
+        zero: value[kZero],
+        one: value[kOne],
+        two: value[kTwo],
+        few: value[kFew],
+        many: value[kMany],
+        other: value[kOther],
+        desc: value[kDesc] ?? '',
+      );
+    } else {
+      _addNamespaceMessage(code, lang, value);
+    }
   }
 
   void _addPluralMessage(
@@ -42,6 +86,7 @@ abstract class LocalizationContentTemplate {
     String desc = '',
   }) {
     messages += getPluralValue(code, zero: zero, one: one, two: two, few: few, many: many, other: other, desc: desc);
+    contentMap += _getContentMapValue(code);
     interface += getValueInterface(
       code,
       [
@@ -52,40 +97,29 @@ abstract class LocalizationContentTemplate {
         many ?? '',
         other ?? '',
       ].join(', '),
-      true,
+      isPlural: true,
     );
   }
 
-  void _addNamespaceMessage(String code, String lang) {
+  void _addNamespaceMessage(String code, String lang, YamlMap value) {
+    final NamespaceTemplate namespaceTemplate = NamespaceTemplate(
+      title: code,
+      contents: value,
+      lang: lang,
+      isFirst: isFirst,
+      parent: title.toLowerCase() == lang.toLowerCase() ? '' : title,
+    );
+    namespaces += namespaceTemplate.toString();
+    interfaces.addAll(namespaceTemplate.interfaces);
+    interface += getNamespaceInterface(code, lang, title);
     messages += getNamespaceValue(code, lang, lang.toLowerCase() == title.toLowerCase() ? '' : title);
+    contentMap += _getContentMapValue(code);
   }
 
-  void addMapMessage(String code, YamlMap value) {
-    if (value[kValue] != null) {
-      addSimpleMessage(code, value[kValue], value[kDesc] ?? '');
-      return;
-    } else if (value[kZero] != null) {
-      _addPluralMessage(
-        code,
-        zero: value[kZero],
-        one: value[kOne],
-        two: value[kTwo],
-        few: value[kFew],
-        many: value[kMany],
-        other: value[kOther],
-        desc: value[kDesc] ?? '',
-      );
-    } else {
-      namespaces += NamespaceTemplate(
-              title: code,
-              contents: value,
-              lang: lang,
-              isFirst: isFirst,
-              parent: title.toLowerCase() == lang.toLowerCase() ? '' : title)
-          .toString();
-      interface += getNamespaceInterface(code, lang, title);
-      _addNamespaceMessage(code, lang);
-    }
+  String _getContentMapValue(String code) {
+    return '''
+      '$code': $code,
+    ''';
   }
 
   @override

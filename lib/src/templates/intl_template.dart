@@ -1,4 +1,4 @@
-import 'package:yalo/src/constants/common_constants.dart';
+import 'package:yalo/src/constants/constants.dart';
 import 'package:yalo/src/templates/language_template.dart';
 
 class IntlTemplate {

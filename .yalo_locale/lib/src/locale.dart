@@ -3,10 +3,24 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 abstract class NamespacedZoneCheckout {
+  T getContent<T>(String key);
   String get title;
 }
 
 class EnNamespacedZoneCheckout extends NamespacedZoneCheckout {
+  Map<String, Object?> get _contentMap => {
+        'title': title,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "Checkout for additional page"
   @override
@@ -18,14 +32,30 @@ class EnNamespacedZoneCheckout extends NamespacedZoneCheckout {
 }
 
 abstract class NamespacedZoneInnerNamespacedZone {
+  T getContent<T>(String key);
   String title({
     required String name,
   });
   String get description;
-  String book(int howMany);
+  String book(int howMany, {int? precision});
 }
 
 class EnNamespacedZoneInnerNamespacedZone extends NamespacedZoneInnerNamespacedZone {
+  Map<String, Object?> get _contentMap => {
+        'title': title,
+        'description': description,
+        'book': book,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "Deeper title of Inner namespaced zone with name $name"
   @override
@@ -50,7 +80,7 @@ class EnNamespacedZoneInnerNamespacedZone extends NamespacedZoneInnerNamespacedZ
   /// Description: "Uses for description of books count"
   /// Example: "zero: books, one: book, two: books, few: books, many: books, other: books"
   @override
-  String book(int howMany) => Intl.plural(
+  String book(int howMany, {int? precision}) => Intl.plural(
         howMany,
         name: '''book''',
         zero: '''books''',
@@ -60,10 +90,12 @@ class EnNamespacedZoneInnerNamespacedZone extends NamespacedZoneInnerNamespacedZ
         many: '''books''',
         other: '''books''',
         desc: '''Uses for description of books count''',
+        precision: precision,
       );
 }
 
 abstract class NamespacedZone {
+  T getContent<T>(String key);
   String get title;
   String get description;
   NamespacedZoneCheckout get checkout;
@@ -71,6 +103,22 @@ abstract class NamespacedZone {
 }
 
 class EnNamespacedZone extends NamespacedZone {
+  Map<String, Object?> get _contentMap => {
+        'title': title,
+        'description': description,
+        'checkout': checkout,
+        'innerNamespacedZone': innerNamespacedZone,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "Title of Namespaced zone"
   @override
@@ -94,12 +142,67 @@ class EnNamespacedZone extends NamespacedZone {
   final NamespacedZoneInnerNamespacedZone innerNamespacedZone = EnNamespacedZoneInnerNamespacedZone();
 }
 
+abstract class App {
+  T getContent<T>(String key);
+  String get title;
+  String get description;
+}
+
+class EnApp extends App {
+  Map<String, Object?> get _contentMap => {
+        'title': title,
+        'description': description,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
+  /// Description: ""
+  /// Example: "Yalo app"
+  @override
+  final String title = Intl.message(
+    '''Yalo app''',
+    name: 'title',
+    desc: '',
+  );
+
+  /// Description: ""
+  /// Example: "This app will show you how to use yalo package"
+  @override
+  final String description = Intl.message(
+    '''This app will show you how to use yalo package''',
+    name: 'description',
+    desc: '',
+  );
+}
+
 abstract class CartCheckout {
+  T getContent<T>(String key);
   String get title;
   String get description;
 }
 
 class EnCartCheckout extends CartCheckout {
+  Map<String, Object?> get _contentMap => {
+        'title': title,
+        'description': description,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "Checkout"
   @override
@@ -120,12 +223,28 @@ class EnCartCheckout extends CartCheckout {
 }
 
 abstract class Cart {
+  T getContent<T>(String key);
   String get title;
   String get description;
   CartCheckout get checkout;
 }
 
 class EnCart extends Cart {
+  Map<String, Object?> get _contentMap => {
+        'title': title,
+        'description': description,
+        'checkout': checkout,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "Cart"
   @override
@@ -148,19 +267,35 @@ class EnCart extends Cart {
 }
 
 abstract class MainScreen {
+  T getContent<T>(String key);
   String product({
     required String brand,
     required int howMany,
+    int? precision,
   });
 }
 
 class EnMainScreen extends MainScreen {
+  Map<String, Object?> get _contentMap => {
+        'product': product,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "zero: There no products., one: There is only one product left from the brand $brand., two: It is your last chance to buy product from the $brand., few: null, many: null, other: You can buy $howMany products"
   @override
   String product({
     required String brand,
     required int howMany,
+    int? precision,
   }) =>
       Intl.plural(
         howMany,
@@ -172,16 +307,19 @@ class EnMainScreen extends MainScreen {
         many: '''You can buy $howMany products''',
         other: '''You can buy $howMany products''',
         desc: '''''',
+        precision: precision,
       );
 }
 
 abstract class LocalizationMessages {
+  T getContent<T>(String key);
   String get cancel;
   String get save;
-  String book(int howMany);
+  String book(int howMany, {int? precision});
   NamespacedZone get namespacedZone;
+  App get app;
   Cart get cart;
-  String people(int howMany);
+  String people(int howMany, {int? precision});
   String greetings({
     required String userName,
     required String hotelName,
@@ -193,11 +331,35 @@ abstract class LocalizationMessages {
     required String shopName,
     required int howMany,
     required String city,
+    int? precision,
   });
   MainScreen get mainScreen;
 }
 
 class En extends LocalizationMessages {
+  Map<String, Object?> get _contentMap => {
+        'cancel': cancel,
+        'save': save,
+        'book': book,
+        'namespacedZone': namespacedZone,
+        'app': app,
+        'cart': cart,
+        'people': people,
+        'greetings': greetings,
+        'weather': weather,
+        'shop': shop,
+        'mainScreen': mainScreen,
+      };
+
+  @override
+  T getContent<T>(String key) {
+    final Object? content = _contentMap[key];
+    if (content is T) {
+      return content;
+    }
+    throw Exception('Not found correct content of type "$T" by key "$key"');
+  }
+
   /// Description: ""
   /// Example: "Cancel"
   @override
@@ -219,7 +381,7 @@ class En extends LocalizationMessages {
   /// Description: "Uses for description of books count"
   /// Example: "zero: books, one: book, two: books, few: null, many: null, other: books"
   @override
-  String book(int howMany) => Intl.plural(
+  String book(int howMany, {int? precision}) => Intl.plural(
         howMany,
         name: '''book''',
         zero: '''books''',
@@ -229,16 +391,19 @@ class En extends LocalizationMessages {
         many: '''books''',
         other: '''books''',
         desc: '''Uses for description of books count''',
+        precision: precision,
       );
   @override
   final NamespacedZone namespacedZone = EnNamespacedZone();
+  @override
+  final App app = EnApp();
   @override
   final Cart cart = EnCart();
 
   /// Description: "An example with numeric substitution in plural strings"
   /// Example: "zero: I saw no people there, one: I saw only one man there, two: I saw two people there, few: I saw $howMany people there, many: I saw $howMany or more people there, other: I think, I saw $howMany people there"
   @override
-  String people(int howMany) => Intl.plural(
+  String people(int howMany, {int? precision}) => Intl.plural(
         howMany,
         name: '''people''',
         zero: '''I saw no people there''',
@@ -248,6 +413,7 @@ class En extends LocalizationMessages {
         many: '''I saw $howMany or more people there''',
         other: '''I think, I saw $howMany people there''',
         desc: '''An example with numeric substitution in plural strings''',
+        precision: precision,
       );
 
   /// Description: ""
@@ -282,6 +448,7 @@ class En extends LocalizationMessages {
     required String shopName,
     required int howMany,
     required String city,
+    int? precision,
   }) =>
       Intl.plural(
         howMany,
@@ -293,6 +460,7 @@ class En extends LocalizationMessages {
         many: '''There are $howMany shops. Sorry, I didn't remember that shop name.''',
         other: '''Well, I tired to count these shops. I can say that there are only $howMany shops!''',
         desc: '''''',
+        precision: precision,
       );
   @override
   final MainScreen mainScreen = EnMainScreen();

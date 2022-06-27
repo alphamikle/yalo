@@ -1,0 +1,18 @@
+app:
+  title: Yalo app
+  description: Presidents app
+
+books:
+  zero: Hallo, ${user}! Du hast keine Bücher.
+  one: Hallo, ${user}! Sie haben ein Buch.
+  two: Hallo, ${user}! Du hast zwei Bücher! Weiter so!
+  few: Hallo, ${user}! Sie haben ${howMany} Buch! Sehr beeindruckend!
+  mane: Hallo, toller ${user}! So viele Bücher wie Sie hat niemand sonst!
+  other: Hallo, ${user}! Sie haben ${howMany} Buch! Sehr beeindruckend!
+
+tooltips:
+  increment: Zuwachs
+
+presidents: ~en.presidents
+
+mainView: ~en.mainView

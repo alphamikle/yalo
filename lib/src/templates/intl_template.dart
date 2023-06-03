@@ -46,7 +46,7 @@ class IntlTemplate {
 
   String get _messagesUtil => '''  
   class Messages {
-    static $kInterfaceName of(BuildContext context) => Localizations.of(context, $kInterfaceName);
+    static $kInterfaceName of(BuildContext context) => Localizations.of(context, $kInterfaceName)!;
 
     $_staticMethods
   }
@@ -61,16 +61,7 @@ class IntlTemplate {
   String get _supportedLocalesEnd => '];';
 
   String get template {
-    return _dependencies +
-        _languageClasses +
-        _start +
-        _templatesMapStart +
-        _templateMapBody +
-        _templatesMapEnd +
-        _end +
-        _messagesUtil +
-        _supportedLocales +
-        _supportedLocalesEnd;
+    return _dependencies + _languageClasses + _start + _templatesMapStart + _templateMapBody + _templatesMapEnd + _end + _messagesUtil + _supportedLocales + _supportedLocalesEnd;
   }
 
   void addLanguage(String code, LanguageTemplate languageTemplate) {

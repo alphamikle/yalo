@@ -8,25 +8,28 @@ class NamespaceTemplate extends LocalizationContentTemplate {
     required super.title,
     required super.lang,
     required this.contents,
-    this.parent = '',
+    required super.parents,
+    required this.wholeValue,
     super.isFirst = false,
   });
 
   final YamlMap contents;
-  final String parent;
 
-  String get capitalizedTitle => capitalize(title);
-  String get capitalizedFullTitle => capitalize(parent) + capitalizedTitle;
+  final Map<String, dynamic> wholeValue;
+
+  String get capitalizedFullTitle {
+    return [...parents, title].map(capitalize).join('');
+  }
 
   @override
   String get interfaceStart => '''
-    abstract class $capitalizedFullTitle {
+    abstract interface class $capitalizedFullTitle {
       T getContent<T>(String key);
   ''';
 
   @override
   String get start => '''
-    class $lang$capitalizedFullTitle extends $capitalizedFullTitle {
+    class $lang$capitalizedFullTitle implements $capitalizedFullTitle {
       Map<String, Object?> get _contentMap => {
   ''';
 
@@ -35,7 +38,7 @@ class NamespaceTemplate extends LocalizationContentTemplate {
     for (MapEntry<dynamic, dynamic> entry in entries) {
       final String code = entry.key as String;
       final dynamic value = entry.value;
-      addMessageToLocalizationContentTemplate(value, code, this);
+      addMessageToLocalizationContentTemplate(value, code, this, wholeValue);
     }
   }
 

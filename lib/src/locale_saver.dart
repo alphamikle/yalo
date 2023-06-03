@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:dart_style/dart_style.dart';
 import 'package:path/path.dart' as path;
+import 'package:yalo/src/constants/constants.dart';
 import 'package:yalo/src/locale_generator.dart';
 import 'package:yalo/src/templates/locale_pubspec_template.dart';
+import 'package:yalo/src/utils/utils.dart';
 
 class LocaleOutput {
   const LocaleOutput({
@@ -43,9 +45,22 @@ class LocaleSaver {
     }
     final File localizationFile = File(path.join(srcPath, 'locale.dart'));
     final DartFormatter formatter = DartFormatter(pageWidth: 120);
-    localizationFile.writeAsStringSync(formatter.format(generator.localizationCode));
+    String localizationCode = generator.localizationCode;
+    try {
+      localizationCode = formatter.format(localizationCode);
+    } catch (error, stackTrace) {
+      log('Some error was happened when formatting of localizationCode performed\n$error\n$stackTrace', name: kLocalizationGeneratorErrorPrefix);
+    }
+    localizationFile.writeAsStringSync(localizationCode);
     final File libraryFile = File(path.join(libPath, 'lib.dart'));
-    libraryFile.writeAsStringSync(formatter.format(generator.generateLibrary()));
+
+    String libraryCode = generator.generateLibrary();
+    try {
+      libraryCode = formatter.format(libraryCode);
+    } catch (error, stackTrace) {
+      log('Some error was happened when formatting of libraryCode performed\n$error\n$stackTrace', name: kLocalizationGeneratorErrorPrefix);
+    }
+    libraryFile.writeAsStringSync(libraryCode);
     final File pubspecFile = File(path.join(packagePath, 'pubspec.yaml'));
     pubspecFile.writeAsStringSync(localePubspecTemplate(packageName, dartSdk, intlVersion));
     return LocaleOutput(

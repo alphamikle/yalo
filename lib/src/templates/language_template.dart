@@ -5,17 +5,17 @@ class LanguageTemplate extends LocalizationContentTemplate {
   LanguageTemplate({
     required super.title,
     required super.isFirst,
-  }) : super(lang: title);
+  }) : super(lang: title, parents: const []);
 
   @override
   String get start => '''
-    class $title extends $kInterfaceName {
+    class $title implements $kInterfaceName {
       Map<String, Object?> get _contentMap => {
   ''';
 
   @override
   String get interfaceStart => '''
-    abstract class $kInterfaceName {
+    abstract interface class $kInterfaceName {
       T getContent<T>(String key);
   ''';
 

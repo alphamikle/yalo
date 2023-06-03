@@ -15,10 +15,11 @@ void main() {
       final File exampleFile = File(path.join(path.current, 'test', 'localization_generator_example.dart.template'));
       final File outputFile = File(path.join(path.current, 'test', 'localization_generator_output.dart.template'));
       final File checkFile = File(path.join(path.current, 'test', 'localization_generator_output.dart'));
-      outputFile.writeAsStringSync(content.localizationFile);
-      checkFile.writeAsStringSync(content.localizationFile);
+      // outputFile.writeAsStringSync(content.localizationFile);
+      // checkFile.writeAsStringSync(content.localizationFile);
 
-      expect(outputFile.readAsStringSync(), exampleFile.readAsStringSync());
+      // expect(outputFile.readAsStringSync(), exampleFile.readAsStringSync());
+      expect(true, false);
     });
   });
 }

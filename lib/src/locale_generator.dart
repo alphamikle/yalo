@@ -28,9 +28,9 @@ class LocaleGenerator with DirectoryReader {
   String get localizationCode => _intlTemplate.template;
 
   String get _libraryCode => '''
-  library yalo_locale;
+library yalo_locale;
 
-  export 'src/locale.dart' show Messages, $kInterfaceName, localizationsDelegates, supportedLocales''';
+export 'src/locale.dart' show Messages, $kInterfaceName, localizationsDelegates, supportedLocales''';
 
   String generateLibrary() {
     return '$_libraryCode${_interfaces.isEmpty ? '' : ', '}${_interfaces.join(', ')};';
@@ -113,7 +113,12 @@ class LocaleGenerator with DirectoryReader {
   void _writeMessage(MapEntry<dynamic, dynamic> entry, LanguageTemplate template) {
     final String code = entry.key as String;
     final dynamic value = entry.value;
-    addMessageToLocalizationContentTemplate(value, code, template);
+
+    Map<String, dynamic> wholeValue = {};
+    if (value is YamlMap) {
+      wholeValue = yamlToMap(value);
+    }
+    addMessageToLocalizationContentTemplate(value, code, template, wholeValue);
   }
 
   void _replaceLinks({

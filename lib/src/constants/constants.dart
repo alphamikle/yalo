@@ -10,4 +10,5 @@ const String kFew = 'few';
 const String kMany = 'many';
 const String kOther = 'other';
 const String kLocalizationGeneratorLogPrefix = 'LOCALIZATION GENERATOR';
+const String kLocalizationGeneratorErrorPrefix = 'ERROR | LOCALIZATION GENERATOR';
 const String kAssetsGeneratorLogPrefix = 'ASSETS GENERATOR';

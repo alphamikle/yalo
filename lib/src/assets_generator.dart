@@ -47,16 +47,12 @@ export 'src/assets.dart';
   }
 
   String _replaceUnderscore(String assetField) {
-    assetField = assetField
-        .replaceAllMapped(RegExp(r'_([a-zA-Z\d])'), (Match match) => match.group(1)!.toUpperCase())
-        .replaceAll('_', '');
+    assetField = assetField.replaceAllMapped(RegExp(r'_([a-zA-Z\d])'), (Match match) => match.group(1)!.toUpperCase()).replaceAll('_', '');
     return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1)!.toLowerCase());
   }
 
   String _replaceDot(String assetField) {
-    assetField = assetField
-        .replaceAllMapped(RegExp(r'\.([a-zA-Z\d])'), (Match match) => match.group(1)!.toUpperCase())
-        .replaceAll('.', '');
+    assetField = assetField.replaceAllMapped(RegExp(r'\.([a-zA-Z\d])'), (Match match) => match.group(1)!.toUpperCase()).replaceAll('.', '');
     return assetField.replaceAllMapped(RegExp(r'^([A-Z])'), (Match match) => match.group(1)!.toLowerCase());
   }
 

@@ -42,9 +42,9 @@ String _removeExtraBraces(String code) {
 }
 
 String getValueInterface(String code, String value, {bool isPlural = false}) {
-  if (_hasSubstitution(value)) {
+  if (_hasSubstitution(value.trim())) {
     return '''
-      String $code(${_generateArgumentsFromValue(value, isPlural: isPlural)});
+      String $code(${_generateArgumentsFromValue(value.trim(), isPlural: isPlural)});
     ''';
   }
   if (isPlural) {
@@ -62,20 +62,18 @@ String getSimpleValue(String code, String value, [String desc = '']) {
   _emptyException(code, kCode);
   _nullException(value, kValue);
 
-  if (_hasSubstitution(value)) {
+  if (_hasSubstitution(value.trim())) {
     return _removeExtraBraces('''
-      /// Description: "$desc"
-      /// Example: "$value"
+      ${desc.isNotEmpty ? '/// ${desc.trim()}' : ''}
       @override
-      String $code(${_generateArgumentsFromValue(value)}) => Intl.message(\'\'\'$value\'\'\', name: '$code', desc: '$desc',);
+      String $code(${_generateArgumentsFromValue(value.trim())}) => Intl.message(\'\'\'${value.trim()}\'\'\', name: '$code');
     ''');
   }
 
   return _removeExtraBraces('''
-    /// Description: "$desc"
-    /// Example: "$value"
+    ${desc.isNotEmpty ? '/// ${desc.trim()}' : ''}
     @override
-    final String $code = Intl.message(\'\'\'$value\'\'\', name: '$code', desc: '$desc',);
+    final String $code = Intl.message(\'\'\'${value.trim()}\'\'\', name: '$code');
   ''');
 }
 
@@ -102,8 +100,7 @@ String getPluralValue(
       _hasSubstitution(many ?? '') ||
       _hasSubstitution(other ?? '')) {
     return _removeExtraBraces('''
-      /// Description: "$desc"
-      /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
+      ${desc.isNotEmpty ? '/// ${desc.trim()}' : ''}
       @override
       String $code(${_generateArgumentsFromValue([
               zero ?? '',
@@ -114,31 +111,28 @@ String getPluralValue(
               other ?? '',
             ].join(', '), isPlural: true)}) => Intl.plural($kHowMany,
         name: \'\'\'$code\'\'\',
-        zero: \'\'\'$zero\'\'\',
-        one: \'\'\'$one\'\'\',
-        two: \'\'\'${two ?? other}\'\'\',
-        few: \'\'\'${few ?? other}\'\'\',
-        many: \'\'\'${many ?? other}\'\'\',
-        other: \'\'\'$other\'\'\',
-        desc: \'\'\'$desc\'\'\',
+        zero: \'\'\'${zero?.trim()}\'\'\',
+        one: \'\'\'${one?.trim()}\'\'\',
+        two: \'\'\'${(two ?? other)?.trim()}\'\'\',
+        few: \'\'\'${(few ?? other)?.trim()}\'\'\',
+        many: \'\'\'${(many ?? other)?.trim()}\'\'\',
+        other: \'\'\'${other?.trim()}\'\'\',
         precision: precision,
       );
     ''');
   }
 
   return _removeExtraBraces('''
-    /// Description: "$desc"
-    /// Example: "zero: $zero, one: $one, two: $two, few: $few, many: $many, other: $other"
+      ${desc.isNotEmpty ? '/// ${desc.trim()}' : ''}
     @override
     String $code(int $kHowMany, {int? precision}) => Intl.plural($kHowMany,
       name: \'\'\'$code\'\'\',
-      zero: \'\'\'$zero\'\'\',
-      one: \'\'\'$one\'\'\',
-      two: \'\'\'${two ?? other}\'\'\',
-      few: \'\'\'${few ?? other}\'\'\',
-      many: \'\'\'${many ?? other}\'\'\',
-      other: \'\'\'$other\'\'\',
-      desc: \'\'\'$desc\'\'\',
+      zero: \'\'\'${zero?.trim()}\'\'\',
+      one: \'\'\'${one?.trim()}\'\'\',
+      two: \'\'\'${(two ?? other)?.trim()}\'\'\',
+      few: \'\'\'${(few ?? other)?.trim()}\'\'\',
+      many: \'\'\'${(many ?? other)?.trim()}\'\'\',
+      other: \'\'\'${other?.trim()}\'\'\',
       precision: precision,
     );
   ''');
@@ -162,11 +156,11 @@ String getNamespaceValue(String code, String lang, String parent) {
   ''';
 }
 
-void addMessageToLocalizationContentTemplate(dynamic value, String code, LocalizationContentTemplate template) {
+void addMessageToLocalizationContentTemplate(dynamic value, String code, LocalizationContentTemplate template, Map<String, dynamic> wholeValue) {
   if (value is String || value is num) {
     template.addSimpleMessage(code, value.toString());
   } else if (value is YamlMap) {
-    template.addComplexMessage(code, value);
+    template.addComplexMessage(code, value, wholeValue);
   } else {
     throw Exception('Invalid format of message. Value: $value, key: $code, type: ${value.runtimeType}');
   }

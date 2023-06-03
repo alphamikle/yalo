@@ -33,9 +33,8 @@ class AssetsScanner {
     _curDir = Directory.current;
     _path = _curDir.path;
     _files = _curDir.listSync();
-    _pubspecEntity = _files.firstWhere(
-        (FileSystemEntity fileEntity) => fileEntity.path.contains(RegExp(r'pubspec.ya?ml$')),
-        orElse: () => _exception('pubspec file'));
+    _pubspecEntity =
+        _files.firstWhere((FileSystemEntity fileEntity) => fileEntity.path.contains(RegExp(r'pubspec.ya?ml$')), orElse: () => _exception('pubspec file'));
     _pubspecFile = File(_pubspecEntity.path);
     _pubspecContent = loadYaml(_pubspecFile.readAsStringSync());
     _flutter = _pubspecContent[kFlutter];
@@ -45,15 +44,15 @@ class AssetsScanner {
     _assetsFolders = _flutter![kAssets];
     if (_assetsFolders == null || _assetsFolders!.isEmpty) {
       throw Exception('''
-      Not found "assets" block in pubspec.yaml file or this block is empty. Please, add at least a one folder to assets block like that:
-      pubspec.yaml
-      #...
-      flutter:
-        #...
-      assets: <-- 1
-        - assets/ <-- 2
-      #...
-      ''');
+Not found "assets" block in pubspec.yaml file or this block is empty. Please, add at least a one folder to assets block like that:
+pubspec.yaml
+#...
+flutter:
+  #...
+assets: <-- 1
+  - assets/ <-- 2
+#...
+''');
     }
   }
 

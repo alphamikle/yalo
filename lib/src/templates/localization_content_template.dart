@@ -1,16 +1,24 @@
 import 'package:yalo/src/constants/constants.dart';
 import 'package:yalo/src/templates/namespace_template.dart';
 import 'package:yalo/src/templates/parsing_methods.dart';
+import 'package:yalo/src/utils/utils.dart';
 import 'package:yaml/yaml.dart';
+
+typedef Lang = String;
 
 abstract class LocalizationContentTemplate {
   LocalizationContentTemplate({
     required this.title,
     required this.lang,
     required this.isFirst,
+    required this.parents,
   });
 
+  final Map<Lang, Map<String, dynamic>> _wholeValueCache = {};
+
   final String title;
+
+  final List<String> parents;
 
   final String lang;
 
@@ -51,12 +59,12 @@ abstract class LocalizationContentTemplate {
   ''';
 
   void addSimpleMessage(String code, String value, [String desc = '']) {
-    messages += getSimpleValue(code, value, desc);
+    messages += getSimpleValue(code, value.trim(), desc);
     contentMap += _getContentMapValue(code);
-    interface += getValueInterface(code, value);
+    interface += getValueInterface(code, value.trim());
   }
 
-  void addComplexMessage(String code, YamlMap value) {
+  void addComplexMessage(String code, YamlMap value, Map<String, dynamic> wholeValue) {
     if (value[kValue] != null) {
       addSimpleMessage(code, value[kValue], value[kDesc] ?? '');
     } else if (value[kZero] != null) {
@@ -71,7 +79,7 @@ abstract class LocalizationContentTemplate {
         desc: value[kDesc] ?? '',
       );
     } else {
-      _addNamespaceMessage(code, lang, value);
+      _addNamespaceMessage(code, lang, value, wholeValue);
     }
   }
 
@@ -101,13 +109,16 @@ abstract class LocalizationContentTemplate {
     );
   }
 
-  void _addNamespaceMessage(String code, String lang, YamlMap value) {
+  void _addNamespaceMessage(String code, String lang, YamlMap value, Map<String, dynamic> wholeValue) {
+    log('Whole value: $wholeValue', name: 'DEBUGGER');
+
     final NamespaceTemplate namespaceTemplate = NamespaceTemplate(
       title: code,
       contents: value,
       lang: lang,
       isFirst: isFirst,
-      parent: title.toLowerCase() == lang.toLowerCase() ? '' : title,
+      parents: [title.toLowerCase() == lang.toLowerCase() ? '' : title],
+      wholeValue: wholeValue,
     );
     namespaces += namespaceTemplate.toString();
     interfaces.addAll(namespaceTemplate.interfaces);

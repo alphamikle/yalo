@@ -6,10 +6,8 @@ export 'src/locale.dart'
         LocalizationMessages,
         localizationsDelegates,
         supportedLocales,
-        NamespacedZoneCheckout,
-        NamespacedZoneInnerNamespacedZone,
-        NamespacedZone,
-        App,
-        CartCheckout,
-        Cart,
-        MainScreen;
+        ThirdFourth,
+        SecondThird,
+        FirstSecond,
+        PrimaryFirst,
+        Primary;

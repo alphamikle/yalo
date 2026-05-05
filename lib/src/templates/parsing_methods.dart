@@ -156,11 +156,11 @@ String getNamespaceValue(String code, String lang, String parent) {
   ''';
 }
 
-void addMessageToLocalizationContentTemplate(dynamic value, String code, LocalizationContentTemplate template, Map<String, dynamic> wholeValue) {
+void addMessageToLocalizationContentTemplate(dynamic value, String code, LocalizationContentTemplate template, List<String> parents) {
   if (value is String || value is num) {
     template.addSimpleMessage(code, value.toString());
   } else if (value is YamlMap) {
-    template.addComplexMessage(code, value, wholeValue);
+    template.addComplexMessage(code, value, parents);
   } else {
     throw Exception('Invalid format of message. Value: $value, key: $code, type: ${value.runtimeType}');
   }

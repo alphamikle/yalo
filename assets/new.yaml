@@ -1,0 +1,50 @@
+## simple
+#greetings: Hello
+#
+## description
+#title:
+#  value: Coolest app ever!
+#  desc: This is the description of that locale string
+#
+## pluralization
+#character:
+#  zero: mice
+#  one: mouse
+#  two: mice
+#  few: mice
+#  other: mice
+#  desc: Pluralized quantity of mice
+#
+## namespaces
+#screens:
+#  mainScreen:
+#    title: Main Screen Title
+#    subtitle: Main Screen Subtitle
+#  secondaryScreen:
+#    title: Secondary Screen Title
+#    subtitle: Secondary Screen Subtitle
+#
+## same sub-trees of namespaces
+#errors:
+#  mainScreen:
+#    title: Error on the main screen
+#    subtitle: Here is nothing to see
+#  secondaryScreen:
+#    title: Here is error too
+#    subtitle: "And here :("
+
+primary:
+  first:
+    second:
+      third:
+        fourth:
+          fifth:
+            value: Hello!
+
+#secondary:
+#  first:
+#    second:
+#      third:
+#        fourth:
+#          fifth:
+#            value: Hello!

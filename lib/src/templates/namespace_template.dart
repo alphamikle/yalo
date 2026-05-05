@@ -9,16 +9,16 @@ class NamespaceTemplate extends LocalizationContentTemplate {
     required super.lang,
     required this.contents,
     required super.parents,
-    required this.wholeValue,
     super.isFirst = false,
   });
 
   final YamlMap contents;
 
-  final Map<String, dynamic> wholeValue;
-
   String get capitalizedFullTitle {
-    return [...parents, title].map(capitalize).join('');
+    return [
+      ...((parents.isEmpty || parents.length == 1) ? [title] : parents),
+      title
+    ].map(capitalize).join('');
   }
 
   @override
@@ -38,7 +38,7 @@ class NamespaceTemplate extends LocalizationContentTemplate {
     for (MapEntry<dynamic, dynamic> entry in entries) {
       final String code = entry.key as String;
       final dynamic value = entry.value;
-      addMessageToLocalizationContentTemplate(value, code, this, wholeValue);
+      addMessageToLocalizationContentTemplate(value, code, this, parents);
     }
   }
 

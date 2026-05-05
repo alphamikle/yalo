@@ -2,14 +2,14 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
-abstract interface class ThirdFourth {
+abstract interface class CheckoutCheckout {
   T getContent<T>(String key);
-  String get fifth;
+  String get title;
 }
 
-class EnThirdFourth implements ThirdFourth {
+class EnCheckoutCheckout implements CheckoutCheckout {
   Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
+        'title': title,
       };
 
   @override
@@ -22,17 +22,23 @@ class EnThirdFourth implements ThirdFourth {
   }
 
   @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
+  final String title = Intl.message('''Checkout for additional page''', name: 'title');
 }
 
-abstract interface class SecondThird {
+abstract interface class InnerNamespacedZoneInnerNamespacedZone {
   T getContent<T>(String key);
-  ThirdFourth get fourth;
+  String title({
+    required String name,
+  });
+  String get description;
+  String book(int howMany, {int? precision});
 }
 
-class EnSecondThird implements SecondThird {
+class EnInnerNamespacedZoneInnerNamespacedZone implements InnerNamespacedZoneInnerNamespacedZone {
   Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
+        'title': title,
+        'description': description,
+        'book': book,
       };
 
   @override
@@ -45,17 +51,43 @@ class EnSecondThird implements SecondThird {
   }
 
   @override
-  final ThirdFourth fourth = EnThirdFourth();
+  String title({
+    required String name,
+  }) =>
+      Intl.message('''Deeper title of Inner namespaced zone with name $name''', name: 'title');
+
+  @override
+  final String description = Intl.message('''Deeper description of Inner namespaced zone''', name: 'description');
+
+  /// Uses for description of books count
+  @override
+  String book(int howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: '''book''',
+        zero: '''books''',
+        one: '''book''',
+        two: '''books''',
+        few: '''books''',
+        many: '''books''',
+        other: '''books''',
+        precision: precision,
+      );
 }
 
-abstract interface class FirstSecond {
+abstract interface class NamespacedZoneNamespacedZone {
   T getContent<T>(String key);
-  SecondThird get third;
+  String get title;
+  String get description;
+  NamespacedZoneCheckout get checkout;
+  NamespacedZoneInnerNamespacedZone get innerNamespacedZone;
 }
 
-class EnFirstSecond implements FirstSecond {
+class EnNamespacedZoneNamespacedZone implements NamespacedZoneNamespacedZone {
   Map<String, Object?> get _contentMap => {
-        'third': third,
+        'title': title,
+        'description': description,
+        'checkout': checkout,
+        'innerNamespacedZone': innerNamespacedZone,
       };
 
   @override
@@ -68,17 +100,26 @@ class EnFirstSecond implements FirstSecond {
   }
 
   @override
-  final SecondThird third = EnSecondThird();
+  final String title = Intl.message('''Title of Namespaced zone''', name: 'title');
+
+  @override
+  final String description = Intl.message('''Description of Namespaced zone''', name: 'description');
+  @override
+  final NamespacedZoneCheckout checkout = EnNamespacedZoneCheckout();
+  @override
+  final NamespacedZoneInnerNamespacedZone innerNamespacedZone = EnNamespacedZoneInnerNamespacedZone();
 }
 
-abstract interface class PrimaryFirst {
+abstract interface class AppApp {
   T getContent<T>(String key);
-  FirstSecond get second;
+  String get title;
+  String get description;
 }
 
-class EnPrimaryFirst implements PrimaryFirst {
+class EnAppApp implements AppApp {
   Map<String, Object?> get _contentMap => {
-        'second': second,
+        'title': title,
+        'description': description,
       };
 
   @override
@@ -91,17 +132,22 @@ class EnPrimaryFirst implements PrimaryFirst {
   }
 
   @override
-  final FirstSecond second = EnFirstSecond();
+  final String title = Intl.message('''Yalo app''', name: 'title');
+
+  @override
+  final String description = Intl.message('''This app will show you how to use yalo package''', name: 'description');
 }
 
-abstract interface class ThirdFourth {
+abstract interface class CheckoutCheckout {
   T getContent<T>(String key);
-  String get fifth;
+  String get title;
+  String get description;
 }
 
-class EnThirdFourth implements ThirdFourth {
+class EnCheckoutCheckout implements CheckoutCheckout {
   Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
+        'title': title,
+        'description': description,
       };
 
   @override
@@ -114,17 +160,24 @@ class EnThirdFourth implements ThirdFourth {
   }
 
   @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
+  final String title = Intl.message('''Checkout''', name: 'title');
+
+  @override
+  final String description = Intl.message('''You should checkout''', name: 'description');
 }
 
-abstract interface class SecondThird {
+abstract interface class CartCart {
   T getContent<T>(String key);
-  ThirdFourth get fourth;
+  String get title;
+  String get description;
+  CartCheckout get checkout;
 }
 
-class EnSecondThird implements SecondThird {
+class EnCartCart implements CartCart {
   Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
+        'title': title,
+        'description': description,
+        'checkout': checkout,
       };
 
   @override
@@ -137,17 +190,26 @@ class EnSecondThird implements SecondThird {
   }
 
   @override
-  final ThirdFourth fourth = EnThirdFourth();
+  final String title = Intl.message('''Cart''', name: 'title');
+
+  @override
+  final String description = Intl.message('''Please, fill the cart to do checkout''', name: 'description');
+  @override
+  final CartCheckout checkout = EnCartCheckout();
 }
 
-abstract interface class FirstSecond {
+abstract interface class MainScreenMainScreen {
   T getContent<T>(String key);
-  SecondThird get third;
+  String product({
+    required String brand,
+    required int howMany,
+    int? precision,
+  });
 }
 
-class EnFirstSecond implements FirstSecond {
+class EnMainScreenMainScreen implements MainScreenMainScreen {
   Map<String, Object?> get _contentMap => {
-        'third': third,
+        'product': product,
       };
 
   @override
@@ -160,17 +222,32 @@ class EnFirstSecond implements FirstSecond {
   }
 
   @override
-  final SecondThird third = EnSecondThird();
+  String product({
+    required String brand,
+    required int howMany,
+    int? precision,
+  }) =>
+      Intl.plural(
+        howMany,
+        name: '''product''',
+        zero: '''There no products.''',
+        one: '''There is only one product left from the brand $brand.''',
+        two: '''It is your last chance to buy product from the $brand.''',
+        few: '''You can buy $howMany products''',
+        many: '''You can buy $howMany products''',
+        other: '''You can buy $howMany products''',
+        precision: precision,
+      );
 }
 
-abstract interface class PrimaryFirst {
+abstract interface class NameName {
   T getContent<T>(String key);
-  FirstSecond get second;
+  String get collision;
 }
 
-class EnPrimaryFirst implements PrimaryFirst {
+class EnNameName implements NameName {
   Map<String, Object?> get _contentMap => {
-        'second': second,
+        'collision': collision,
       };
 
   @override
@@ -183,17 +260,17 @@ class EnPrimaryFirst implements PrimaryFirst {
   }
 
   @override
-  final FirstSecond second = EnFirstSecond();
+  final String collision = Intl.message('''Mike''', name: 'collision');
 }
 
-abstract interface class ThirdFourth {
+abstract interface class Second_nameSecond_name {
   T getContent<T>(String key);
-  String get fifth;
+  String get collision;
 }
 
-class EnThirdFourth implements ThirdFourth {
+class EnSecond_nameSecond_name implements Second_nameSecond_name {
   Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
+        'collision': collision,
       };
 
   @override
@@ -206,417 +283,51 @@ class EnThirdFourth implements ThirdFourth {
   }
 
   @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class SecondThird {
-  T getContent<T>(String key);
-  ThirdFourth get fourth;
-}
-
-class EnSecondThird implements SecondThird {
-  Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-}
-
-abstract interface class FirstSecond {
-  T getContent<T>(String key);
-  SecondThird get third;
-}
-
-class EnFirstSecond implements FirstSecond {
-  Map<String, Object?> get _contentMap => {
-        'third': third,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final SecondThird third = EnSecondThird();
-}
-
-abstract interface class ThirdFourth {
-  T getContent<T>(String key);
-  String get fifth;
-}
-
-class EnThirdFourth implements ThirdFourth {
-  Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class SecondThird {
-  T getContent<T>(String key);
-  ThirdFourth get fourth;
-}
-
-class EnSecondThird implements SecondThird {
-  Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-}
-
-abstract interface class FirstSecond {
-  T getContent<T>(String key);
-  SecondThird get third;
-}
-
-class EnFirstSecond implements FirstSecond {
-  Map<String, Object?> get _contentMap => {
-        'third': third,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final SecondThird third = EnSecondThird();
-}
-
-abstract interface class ThirdFourth {
-  T getContent<T>(String key);
-  String get fifth;
-}
-
-class EnThirdFourth implements ThirdFourth {
-  Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class SecondThird {
-  T getContent<T>(String key);
-  ThirdFourth get fourth;
-}
-
-class EnSecondThird implements SecondThird {
-  Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-}
-
-abstract interface class ThirdFourth {
-  T getContent<T>(String key);
-  String get fifth;
-}
-
-class EnThirdFourth implements ThirdFourth {
-  Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class SecondThird {
-  T getContent<T>(String key);
-  ThirdFourth get fourth;
-}
-
-class EnSecondThird implements SecondThird {
-  Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-}
-
-abstract interface class ThirdFourth {
-  T getContent<T>(String key);
-  String get fifth;
-}
-
-class EnThirdFourth implements ThirdFourth {
-  Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class ThirdFourth {
-  T getContent<T>(String key);
-  String get fifth;
-}
-
-class EnThirdFourth implements ThirdFourth {
-  Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class ThirdFourth {
-  T getContent<T>(String key);
-  String get fifth;
-}
-
-class EnThirdFourth implements ThirdFourth {
-  Map<String, Object?> get _contentMap => {
-        'fifth': fifth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final String fifth = Intl.message('''Hello!''', name: 'fifth');
-}
-
-abstract interface class SecondThird {
-  T getContent<T>(String key);
-  ThirdFourth get fourth;
-  ThirdFourth get fourth;
-  ThirdFourth get fourth;
-}
-
-class EnSecondThird implements SecondThird {
-  Map<String, Object?> get _contentMap => {
-        'fourth': fourth,
-        'fourth': fourth,
-        'fourth': fourth,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-  @override
-  final ThirdFourth fourth = EnThirdFourth();
-}
-
-abstract interface class FirstSecond {
-  T getContent<T>(String key);
-  SecondThird get third;
-  SecondThird get third;
-  SecondThird get third;
-}
-
-class EnFirstSecond implements FirstSecond {
-  Map<String, Object?> get _contentMap => {
-        'third': third,
-        'third': third,
-        'third': third,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final SecondThird third = EnSecondThird();
-  @override
-  final SecondThird third = EnSecondThird();
-  @override
-  final SecondThird third = EnSecondThird();
-}
-
-abstract interface class PrimaryFirst {
-  T getContent<T>(String key);
-  FirstSecond get second;
-  FirstSecond get second;
-  FirstSecond get second;
-}
-
-class EnPrimaryFirst implements PrimaryFirst {
-  Map<String, Object?> get _contentMap => {
-        'second': second,
-        'second': second,
-        'second': second,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final FirstSecond second = EnFirstSecond();
-  @override
-  final FirstSecond second = EnFirstSecond();
-  @override
-  final FirstSecond second = EnFirstSecond();
-}
-
-abstract interface class Primary {
-  T getContent<T>(String key);
-  PrimaryFirst get first;
-  PrimaryFirst get first;
-  PrimaryFirst get first;
-}
-
-class EnPrimary implements Primary {
-  Map<String, Object?> get _contentMap => {
-        'first': first,
-        'first': first,
-        'first': first,
-      };
-
-  @override
-  T getContent<T>(String key) {
-    final Object? content = _contentMap[key];
-    if (content is T) {
-      return content;
-    }
-    throw Exception('Not found correct content of type "$T" by key "$key"');
-  }
-
-  @override
-  final PrimaryFirst first = EnPrimaryFirst();
-  @override
-  final PrimaryFirst first = EnPrimaryFirst();
-  @override
-  final PrimaryFirst first = EnPrimaryFirst();
+  final String collision = Intl.message('''Alfa''', name: 'collision');
 }
 
 abstract interface class LocalizationMessages {
   T getContent<T>(String key);
-  Primary get primary;
+  String get cancel;
+  String get save;
+  String book(int howMany, {int? precision});
+  NamespacedZone get namespacedZone;
+  App get app;
+  Cart get cart;
+  String people(int howMany, {int? precision});
+  String greetings({
+    required String userName,
+    required String hotelName,
+  });
+  String weather({
+    required String temperature,
+  });
+  String shop({
+    required String shopName,
+    required int howMany,
+    required String city,
+    int? precision,
+  });
+  MainScreen get mainScreen;
+  Name get name;
+  Second_name get second_name;
 }
 
 class En implements LocalizationMessages {
   Map<String, Object?> get _contentMap => {
-        'primary': primary,
+        'cancel': cancel,
+        'save': save,
+        'book': book,
+        'namespacedZone': namespacedZone,
+        'app': app,
+        'cart': cart,
+        'people': people,
+        'greetings': greetings,
+        'weather': weather,
+        'shop': shop,
+        'mainScreen': mainScreen,
+        'name': name,
+        'second_name': second_name,
       };
 
   @override
@@ -629,7 +340,84 @@ class En implements LocalizationMessages {
   }
 
   @override
-  final Primary primary = EnPrimary();
+  final String cancel = Intl.message('''Cancel''', name: 'cancel');
+
+  /// Saving something
+  @override
+  final String save = Intl.message('''Save''', name: 'save');
+
+  /// Uses for description of books count
+  @override
+  String book(int howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: '''book''',
+        zero: '''books''',
+        one: '''book''',
+        two: '''books''',
+        few: '''books''',
+        many: '''books''',
+        other: '''books''',
+        precision: precision,
+      );
+  @override
+  final NamespacedZone namespacedZone = EnNamespacedZone();
+  @override
+  final App app = EnApp();
+  @override
+  final Cart cart = EnCart();
+
+  /// An example with numeric substitution in plural strings
+  @override
+  String people(int howMany, {int? precision}) => Intl.plural(
+        howMany,
+        name: '''people''',
+        zero: '''I saw no people there''',
+        one: '''I saw only one man there''',
+        two: '''I saw two people there''',
+        few: '''I saw $howMany people there''',
+        many: '''I saw $howMany or more people there''',
+        other: '''I think, I saw $howMany people there''',
+        precision: precision,
+      );
+
+  @override
+  String greetings({
+    required String userName,
+    required String hotelName,
+  }) =>
+      Intl.message('''Hello $userName! We are glad to see you at our $hotelName hotel!''', name: 'greetings');
+
+  /// Title on the main weather screen (see here: https://www.figma.com/community/file/974352831498882628)
+  @override
+  String weather({
+    required String temperature,
+  }) =>
+      Intl.message('''It's $temperature degrees outside today!''', name: 'weather');
+
+  @override
+  String shop({
+    required String shopName,
+    required int howMany,
+    required String city,
+    int? precision,
+  }) =>
+      Intl.plural(
+        howMany,
+        name: '''shop''',
+        zero: '''There are no any $shopName shops''',
+        one: '''There are exactly one $shopName shop''',
+        two: '''There are two $shopName shops''',
+        few: '''There are $howMany $shopName shops and we have plans to open additional at the $city!''',
+        many: '''There are $howMany shops. Sorry, I didn't remember that shop name.''',
+        other: '''Well, I tired to count these shops. I can say that there are only $howMany shops!''',
+        precision: precision,
+      );
+  @override
+  final MainScreen mainScreen = EnMainScreen();
+  @override
+  final Name name = EnName();
+  @override
+  final Second_name second_name = EnSecond_name();
 }
 
 class LocalizationDelegate extends LocalizationsDelegate<LocalizationMessages> {

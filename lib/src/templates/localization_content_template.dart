@@ -14,8 +14,6 @@ abstract class LocalizationContentTemplate {
     required this.parents,
   });
 
-  final Map<Lang, Map<String, dynamic>> _wholeValueCache = {};
-
   final String title;
 
   final List<String> parents;
@@ -64,7 +62,7 @@ abstract class LocalizationContentTemplate {
     interface += getValueInterface(code, value.trim());
   }
 
-  void addComplexMessage(String code, YamlMap value, Map<String, dynamic> wholeValue) {
+  void addComplexMessage(String code, YamlMap value, List<String> parents) {
     if (value[kValue] != null) {
       addSimpleMessage(code, value[kValue], value[kDesc] ?? '');
     } else if (value[kZero] != null) {
@@ -79,7 +77,7 @@ abstract class LocalizationContentTemplate {
         desc: value[kDesc] ?? '',
       );
     } else {
-      _addNamespaceMessage(code, lang, value, wholeValue);
+      _addNamespaceMessage(code, lang, value, parents);
     }
   }
 
@@ -109,16 +107,17 @@ abstract class LocalizationContentTemplate {
     );
   }
 
-  void _addNamespaceMessage(String code, String lang, YamlMap value, Map<String, dynamic> wholeValue) {
-    log('Whole value: $wholeValue', name: 'DEBUGGER');
-
+  void _addNamespaceMessage(String code, String lang, YamlMap value, List<String> parents) {
+    if (title.toLowerCase() != lang.toLowerCase()) {
+      // parents.add(title);
+      log('ADD NAMESPACE MESSAGE; code: $code; title: $title; parents: $parents');
+    }
     final NamespaceTemplate namespaceTemplate = NamespaceTemplate(
       title: code,
       contents: value,
       lang: lang,
       isFirst: isFirst,
-      parents: [title.toLowerCase() == lang.toLowerCase() ? '' : title],
-      wholeValue: wholeValue,
+      parents: parents,
     );
     namespaces += namespaceTemplate.toString();
     interfaces.addAll(namespaceTemplate.interfaces);

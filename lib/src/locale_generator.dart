@@ -72,6 +72,7 @@ export 'src/locale.dart' show Messages, $kInterfaceName, localizationsDelegates,
     _languages.clear();
     bool isFirst = true;
     final Map<String, YamlMap> fileContents = {};
+
     for (final String intlFilePath in _intlFilesPaths) {
       final File file = File(p.join(path, intlFilePath));
       final String fileData = file.readAsStringSync();
@@ -85,16 +86,7 @@ export 'src/locale.dart' show Messages, $kInterfaceName, localizationsDelegates,
       final YamlMap fileContent = loadYaml(fileData);
       fileContents[intlFilePath] = fileContent;
     }
-    for (final String intlFilePath in _intlFilesPaths) {
-      final YamlMap fileContent = fileContents[intlFilePath]!;
-      for (final MapEntry<dynamic, dynamic> entry in fileContent.entries) {
-        _replaceLinks(
-          entry: entry,
-          fileContentKey: intlFilePath,
-          fileContents: fileContents,
-        );
-      }
-    }
+
     for (String intlFilePath in _intlFilesPaths) {
       final YamlMap fileContent = fileContents[intlFilePath]!;
       final List<MapEntry<dynamic, dynamic>> entries = fileContent.entries.toList();
@@ -111,48 +103,7 @@ export 'src/locale.dart' show Messages, $kInterfaceName, localizationsDelegates,
   }
 
   void _writeMessage(MapEntry<dynamic, dynamic> entry, LanguageTemplate template) {
-    final String code = entry.key as String;
-    final dynamic value = entry.value;
-
-    Map<String, dynamic> wholeValue = {};
-    if (value is YamlMap) {
-      wholeValue = yamlToMap(value);
-    }
-    addMessageToLocalizationContentTemplate(value, code, template, wholeValue);
-  }
-
-  void _replaceLinks({
-    required MapEntry<dynamic, dynamic> entry,
-    required String fileContentKey,
-    required Map<String, YamlMap> fileContents,
-  }) {
-    final dynamic key = entry.key;
-    final dynamic value = entry.value;
-    if (value is String) {
-      final RegExpMatch? match = RegExp(r'^~(?<language>\w+).(?<key>\w+)$').firstMatch(value);
-      if (match != null) {
-        final String targetLanguage = match.namedGroup('language')!;
-        final String targetKey = match.namedGroup('key')!;
-        String? targetFilePath;
-        YamlMap? targetFileContent;
-        for (final MapEntry<String, YamlMap> entry in fileContents.entries) {
-          final RegExp languageRegExp = RegExp('$targetLanguage.?_?');
-          if (languageRegExp.hasMatch(entry.key)) {
-            targetFilePath = entry.key;
-            targetFileContent = entry.value;
-          }
-        }
-        if (targetFileContent == null) {
-          throw Exception('Not found target intl file for language "$targetLanguage" with value "$key: $value"');
-        }
-        final Object? targetValue = targetFileContent[targetKey];
-        if (targetValue == null) {
-          throw Exception('Not found value with root key "$targetKey" in intl file "$targetFilePath"');
-        }
-        final Map<dynamic, dynamic> mutableFileContent = Map.fromEntries(fileContents[fileContentKey]!.entries);
-        mutableFileContent[targetKey] = targetValue;
-        fileContents[fileContentKey] = YamlMap.wrap(mutableFileContent);
-      }
-    }
+    final MapEntry(:key, :value) = entry;
+    addMessageToLocalizationContentTemplate(value, key.toString(), template, []);
   }
 }
